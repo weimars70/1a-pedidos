@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Nav menu dropdown */
+.nav-menu {
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+
+  .q-item {
+    font-size: 13px;
+    padding: 8px 16px;
+    min-height: 36px;
+    transition: background 0.15s;
+
+    &:hover { background: #f0faf8; }
+    &.menu-item-active {
+      background: #e0f5f1;
+      color: #1B7A6E;
+      font-weight: 600;
+    }
+  }
+}

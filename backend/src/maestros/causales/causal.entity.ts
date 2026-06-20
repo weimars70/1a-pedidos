@@ -1,0 +1,13 @@
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity('causal_terminacion_contrato')
+export class Causal {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ nullable: true })
+  nombre: string;
+
+  @Column({ nullable: true })
+  usuario: number;
+}
