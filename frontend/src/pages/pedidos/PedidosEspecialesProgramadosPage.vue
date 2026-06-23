@@ -1,9 +1,5 @@
-<template>
+﻿<template>
   <q-page class="pedidos-esp-prog-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-pa-md q-mb-lg">
-      <div class="text-h5 text-white text-weight-bold">Pedidos Especiales Programados</div>
     </div>
 
     <!-- Toolbar -->
@@ -46,7 +42,7 @@
         flat
         bordered
         dense
-        :rows-per-page-options="[15, 25, 50, 100]"
+        :rows-per-page-options="[12, 25, 50, 100]"
         :rows-per-page="25"
         class="pedidos-esp-prog-table"
       >
@@ -160,12 +156,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.pedidos-esp-prog-page { max-width: 1800px; margin: 0 auto; }
-
-.page-header {
-  background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%);
-  border-radius: 12px;
-}
+.pedidos-esp-prog-page { width: 100%; }
 
 .toolbar-section { padding: 12px 16px !important; }
 .search-input  { width: 260px; }

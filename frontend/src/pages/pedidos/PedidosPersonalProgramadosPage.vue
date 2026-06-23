@@ -1,9 +1,5 @@
-<template>
+﻿<template>
   <q-page class="pedidos-programados-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-pa-md q-mb-lg">
-      <div class="text-h5 text-white text-weight-bold">Pedidos Personal Programados</div>
     </div>
 
     <!-- Toolbar -->
@@ -62,7 +58,7 @@
         flat
         bordered
         dense
-        :rows-per-page-options="[15, 25, 50, 100]"
+        :rows-per-page-options="[12, 25, 50, 100]"
         :rows-per-page="15"
         class="pedidos-programados-table"
       >
@@ -269,12 +265,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.pedidos-programados-page { max-width: 1800px; margin: 0 auto; }
-
-.page-header {
-  background: linear-gradient(135deg, #0D47A1 0%, #1976D2 100%);
-  border-radius: 12px;
-}
+.pedidos-programados-page { width: 100%; }
 
 .toolbar-section { padding: 12px 16px !important; }
 .search-input  { width: 260px; }

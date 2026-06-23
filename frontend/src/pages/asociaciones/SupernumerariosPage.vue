@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="supernumerarios-page q-pa-lg">
     <!-- Page header -->
     <div class="page-header q-mb-lg">
@@ -6,13 +6,6 @@
         <q-icon name="people_alt" color="primary" size="28px" class="q-mr-sm" />
         <h5 class="q-ma-none text-weight-bold text-grey-9">Supernumerarios</h5>
       </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Asociaciones" />
-        <q-breadcrumbs-el label="Supernumerarios" />
-      </q-breadcrumbs>
-    </div>
-
     <!-- Form card -->
     <q-card flat bordered class="q-mb-md shadow-2">
       <q-card-section class="form-section">
@@ -155,7 +148,7 @@
         flat
         dense
         bordered
-        :rows-per-page-options="[25, 50, 100, 200, 0]"
+        :rows-per-page-options="[12, 25, 50, 100, 0]"
         :rows-per-page="50"
         class="supernumerarios-table"
       >
@@ -470,21 +463,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .supernumerarios-page {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.page-header {
-  background: white;
-  border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-.page-title-area {
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
+  width: 100%;
 }
 
 .form-section {

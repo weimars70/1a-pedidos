@@ -1,9 +1,5 @@
-<template>
+﻿<template>
   <q-page class="pedidos-anulados-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-pa-md q-mb-lg">
-      <div class="text-h5 text-white text-weight-bold">Pedidos Anulados</div>
     </div>
 
     <!-- Toolbar -->
@@ -54,7 +50,7 @@
         flat
         bordered
         dense
-        :rows-per-page-options="[15, 25, 50, 100]"
+        :rows-per-page-options="[12, 25, 50, 100]"
         :rows-per-page="15"
         class="pedidos-anulados-table"
       >
@@ -192,12 +188,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.pedidos-anulados-page { max-width: 1600px; margin: 0 auto; }
-
-.page-header {
-  background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
-  border-radius: 12px;
-}
+.pedidos-anulados-page { width: 100%; }
 
 .toolbar-section { padding: 12px 16px !important; }
 .search-input  { width: 260px; }

@@ -1,19 +1,5 @@
-<template>
+﻿<template>
   <q-page class="registrar-contrato-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon name="trending_down" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">Nuevo registro de Disminución Contrato</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Contratos" />
-        <q-breadcrumbs-el label="Nuevo Disminución Contrato" />
-      </q-breadcrumbs>
-    </div>
-
     <!-- Form card -->
     <q-card flat bordered class="form-card">
       <div class="form-topbar">
@@ -197,13 +183,7 @@ onMounted(() => { void loadLookups() })
 </script>
 
 <style lang="scss" scoped>
-.registrar-contrato-page { max-width: 900px; margin: 0 auto; }
-.page-header {
-  background: white; border-radius: 12px;
-  padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
-
+.registrar-contrato-page { width: 100%; }
 .form-card { border-radius: 12px; overflow: hidden; }
 .form-topbar {
   display: flex; align-items: center;

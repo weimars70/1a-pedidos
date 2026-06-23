@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="q-pa-md">
 
     <!-- Header -->
@@ -24,7 +24,7 @@
       flat
       bordered
       dense
-      :rows-per-page-options="[15, 25, 50, 100]"
+      :rows-per-page-options="[12, 25, 50, 100]"
       :pagination="{ rowsPerPage: 15 }"
     >
       <template #no-data>

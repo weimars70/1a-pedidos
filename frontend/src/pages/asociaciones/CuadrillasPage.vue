@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page>
     <div class="page-header q-pa-md">
       <div class="row items-center">
@@ -242,9 +242,6 @@ onMounted(() => { void Promise.all([loadData(), loadOptions()]) })
 </script>
 
 <style scoped>
-.page-header {
-  background: linear-gradient(135deg, #0F5A52 0%, #26A69A 100%);
-}
 .asociar-btn {
   background: linear-gradient(135deg, #0F5A52 0%, #26A69A 100%);
   color: white;

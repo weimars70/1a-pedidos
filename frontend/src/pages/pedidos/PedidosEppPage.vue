@@ -1,9 +1,5 @@
-<template>
+﻿<template>
   <q-page class="pedidos-epp-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-pa-md q-mb-lg">
-      <div class="text-h5 text-white text-weight-bold">Pedidos EPP</div>
     </div>
 
     <!-- Toolbar -->
@@ -28,7 +24,7 @@
         row-key="id"
         flat
         dense
-        :rows-per-page-options="[25, 50, 100]"
+        :rows-per-page-options="[12, 25, 50, 100]"
         class="pedidos-table"
       >
         <template #body-cell-facturar="props">
@@ -103,12 +99,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.pedidos-epp-page { max-width: 1400px; margin: 0 auto; }
-
-.page-header {
-  background: linear-gradient(135deg, #0F5A52 0%, #26A69A 100%);
-  border-radius: 12px;
-}
+.pedidos-epp-page { width: 100%; }
 
 .toolbar-row {
   display: flex; align-items: center; justify-content: space-between;

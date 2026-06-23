@@ -13,13 +13,7 @@
 
         <!-- Navigation -->
         <nav class="main-nav">
-          <q-btn
-            flat
-            no-caps
-            class="nav-item"
-            :class="{ active: isActive('/app/inicio') }"
-            @click="$router.push('/app/inicio')"
-          >
+          <q-btn flat no-caps class="nav-item" :class="{ active: isActive('/app/inicio') }" @click="navigate('/app/inicio', 'Inicio', 'dashboard')">
             <q-icon name="dashboard" size="16px" class="q-mr-xs" />
             Inicio
           </q-btn>
@@ -31,7 +25,7 @@
             <q-icon name="arrow_drop_down" size="18px" />
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense>
-                <q-item clickable v-close-popup @click="$router.push('/app/cesantias')">
+                <q-item clickable v-close-popup @click="navigate('/app/cesantias', 'Cesantías', 'account_balance')">
                   <q-item-section>Cesantías</q-item-section>
                 </q-item>
               </q-list>
@@ -46,16 +40,12 @@
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense style="min-width: 240px">
                 <q-item
-                  v-for="item in maestrosMenu"
-                  :key="item.to"
-                  clickable
-                  v-close-popup
-                  @click="$router.push(item.to)"
-                  :class="{ 'menu-item-active': $route.path === item.to }"
+                  v-for="item in maestrosMenu" :key="item.to"
+                  clickable v-close-popup
+                  @click="navigate(item.to, item.label, item.icon)"
+                  :class="{ 'menu-item-active': isTabActive(item.to) }"
                 >
-                  <q-item-section avatar>
-                    <q-icon :name="item.icon" size="18px" color="primary" />
-                  </q-item-section>
+                  <q-item-section avatar><q-icon :name="item.icon" size="18px" color="primary" /></q-item-section>
                   <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
               </q-list>
@@ -70,16 +60,12 @@
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense style="min-width: 240px">
                 <q-item
-                  v-for="item in asociacionesMenu"
-                  :key="item.to"
-                  clickable
-                  v-close-popup
-                  @click="$router.push(item.to)"
-                  :class="{ 'menu-item-active': $route.path === item.to }"
+                  v-for="item in asociacionesMenu" :key="item.to"
+                  clickable v-close-popup
+                  @click="navigate(item.to, item.label, item.icon)"
+                  :class="{ 'menu-item-active': isTabActive(item.to) }"
                 >
-                  <q-item-section avatar>
-                    <q-icon :name="item.icon" size="18px" color="primary" />
-                  </q-item-section>
+                  <q-item-section avatar><q-icon :name="item.icon" size="18px" color="primary" /></q-item-section>
                   <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
               </q-list>
@@ -94,16 +80,12 @@
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense style="min-width: 240px">
                 <q-item
-                  v-for="item in contratosMenu"
-                  :key="item.to"
-                  clickable
-                  v-close-popup
-                  @click="$router.push(item.to)"
-                  :class="{ 'menu-item-active': $route.path === item.to }"
+                  v-for="item in contratosMenu" :key="item.to"
+                  clickable v-close-popup
+                  @click="navigate(item.to, item.label, item.icon)"
+                  :class="{ 'menu-item-active': isTabActive(item.to) }"
                 >
-                  <q-item-section avatar>
-                    <q-icon :name="item.icon" size="18px" color="primary" />
-                  </q-item-section>
+                  <q-item-section avatar><q-icon :name="item.icon" size="18px" color="primary" /></q-item-section>
                   <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
               </q-list>
@@ -118,16 +100,12 @@
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense style="min-width: 240px">
                 <q-item
-                  v-for="item in pedidosMenu"
-                  :key="item.route"
-                  clickable
-                  v-close-popup
-                  @click="$router.push(item.route)"
-                  :class="{ 'menu-item-active': $route.path === item.route }"
+                  v-for="item in pedidosMenu" :key="item.route"
+                  clickable v-close-popup
+                  @click="navigate(item.route, item.label, item.icon)"
+                  :class="{ 'menu-item-active': isTabActive(item.route) }"
                 >
-                  <q-item-section avatar>
-                    <q-icon :name="item.icon" size="18px" color="primary" />
-                  </q-item-section>
+                  <q-item-section avatar><q-icon :name="item.icon" size="18px" color="primary" /></q-item-section>
                   <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
               </q-list>
@@ -142,16 +120,12 @@
             <q-menu class="nav-menu" anchor="bottom left" self="top left" :offset="[0, 4]" style="max-height: calc(100vh - 80px); overflow-y: auto;">
               <q-list dense style="min-width: 220px">
                 <q-item
-                  v-for="item in seguridadMenu"
-                  :key="item.to"
-                  clickable
-                  v-close-popup
-                  @click="item.action ? item.action() : $router.push(item.to)"
-                  :class="{ 'menu-item-active': $route.path === item.to }"
+                  v-for="item in seguridadMenu" :key="item.to"
+                  clickable v-close-popup
+                  @click="item.action ? item.action() : navigate(item.to, item.label, item.icon)"
+                  :class="{ 'menu-item-active': isTabActive(item.to) }"
                 >
-                  <q-item-section avatar>
-                    <q-icon :name="item.icon" size="18px" color="primary" />
-                  </q-item-section>
+                  <q-item-section avatar><q-icon :name="item.icon" size="18px" color="primary" /></q-item-section>
                   <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
               </q-list>
@@ -174,43 +148,38 @@
           </div>
           <div class="user-divider"></div>
           <span class="system-name">LAVORO UNOA</span>
-          <q-btn
-            flat
-            round
-            dense
-            icon="logout"
-            class="logout-btn q-ml-sm"
-            @click="logout"
-          >
+          <q-btn flat round dense icon="logout" class="logout-btn q-ml-sm" @click="logout">
             <q-tooltip>Cerrar sesión</q-tooltip>
           </q-btn>
         </div>
       </q-toolbar>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar" v-if="tabsStore.tabs.length > 0">
+        <div class="tab-bar-inner">
+          <div
+            v-for="tab in tabsStore.tabs"
+            :key="tab.id"
+            class="app-tab"
+            :class="{ 'app-tab--active': tab.id === tabsStore.activeTabId }"
+            @click="selectTab(tab.id)"
+          >
+            <q-icon :name="tab.icon" size="13px" class="tab-icon" />
+            <span class="tab-label">{{ tab.label }}</span>
+            <button class="tab-close" @click.stop="closeTab(tab.id)" title="Cerrar">
+              <q-icon name="close" size="12px" />
+            </button>
+          </div>
+        </div>
+        <button class="tab-close-all" @click="tabsStore.closeAllTabs()" title="Cerrar todas">
+          <q-icon name="close" size="14px" />
+          <span>Todas</span>
+        </button>
+      </div>
     </q-header>
 
-    <!-- Tab bar de páginas abiertas en la sesión -->
-    <div v-if="openTabs.length" class="session-tabbar">
-      <div class="tab-scroll">
-        <div
-          v-for="tab in openTabs"
-          :key="tab.path"
-          class="session-tab"
-          :class="{ 'session-tab--active': route.path === tab.path }"
-          @click="router.push(tab.path)"
-        >
-          <q-icon :name="tab.icon" size="13px" class="q-mr-xs" />
-          <span class="tab-label">{{ tab.label }}</span>
-          <q-btn flat round dense size="5px" icon="close" class="tab-close"
-            @click.stop="closeTab(tab.path)" />
-        </div>
-      </div>
-      <q-btn flat dense no-caps size="10px" icon="playlist_remove" class="tab-clear-all"
-        title="Cerrar todas las pestañas"
-        @click="clearAllTabs" />
-    </div>
-
     <!-- Page content -->
-    <q-page-container class="page-container" :class="{ 'with-tabbar': openTabs.length }">
+    <q-page-container class="page-container">
       <router-view v-slot="{ Component }">
         <transition name="page-fade" mode="out-in">
           <component :is="Component" />
@@ -221,81 +190,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
+import { useTabsStore } from 'src/stores/tabs'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+const tabsStore = useTabsStore()
 
-// ── Tab bar de sesión ──
-interface SessionTab { path: string; label: string; icon: string }
-
-// Mapa de rutas conocidas → etiqueta + ícono
-const ROUTE_META: Record<string, { label: string; icon: string }> = {
-  '/app/inicio':                                    { label: 'Inicio',                icon: 'dashboard' },
-  '/app/cesantias':                                 { label: 'Cesantías',             icon: 'account_balance' },
-  '/app/maestros/clientes':                         { label: 'Clientes',              icon: 'people' },
-  '/app/maestros/empleados':                        { label: 'Empleados',             icon: 'badge' },
-  '/app/maestros/perfiles':                         { label: 'Perfiles',              icon: 'person_pin' },
-  '/app/maestros/causales':                         { label: 'Causales',              icon: 'cancel' },
-  '/app/maestros/cuadrillas':                       { label: 'Cuadrillas',            icon: 'groups' },
-  '/app/maestros/implementos':                      { label: 'Implementos',           icon: 'construction' },
-  '/app/maestros/maquinaria':                       { label: 'Maquinaria',            icon: 'precision_manufacturing' },
-  '/app/maestros/tipo-equipo':                      { label: 'Tipo Equipo',           icon: 'category' },
-  '/app/maestros/tipo-servicio':                    { label: 'Tipo Servicio',         icon: 'design_services' },
-  '/app/contratos':                                 { label: 'Contratos',             icon: 'description' },
-  '/app/contratos/registrar-terminacion':           { label: 'Nueva Terminación',     icon: 'assignment_late' },
-  '/app/contratos/registrar-disminucion':           { label: 'Nueva Disminución',     icon: 'trending_down' },
-  '/app/contratos/terminados':                      { label: 'Terminados',            icon: 'assignment_turned_in' },
-  '/app/asociaciones/empleados-perfil':             { label: 'Empleados-Perfil',      icon: 'badge' },
-  '/app/asociaciones/supernumerarios':              { label: 'Supernumerarios',       icon: 'people' },
-  '/app/pedidos':                                   { label: 'Pedidos',               icon: 'shopping_cart' },
-  '/app/pedidos/areas':                             { label: 'Ped. Áreas',            icon: 'map' },
-  '/app/pedidos/personal':                          { label: 'Ped. Personal',         icon: 'people' },
-  '/app/pedidos/a-facturar':                        { label: 'A Facturar',            icon: 'pending_actions' },
-  '/app/pedidos/facturados':                        { label: 'Facturados',            icon: 'receipt' },
-  '/app/pedidos/anulados':                          { label: 'Anulados',              icon: 'cancel' },
-  '/app/seguridad/usuarios':                        { label: 'Usuarios',              icon: 'manage_accounts' },
-  '/app/seguridad/cambiar-clave':                   { label: 'Cambiar Clave',         icon: 'lock' },
-}
-
-const openTabs = ref<SessionTab[]>([])
-
-function resolveTabMeta(path: string): { label: string; icon: string } {
-  if (ROUTE_META[path]) return ROUTE_META[path]
-  // fallback genérico basado en el último segmento
-  const seg = path.split('/').filter(Boolean).pop() ?? path
-  return { label: seg.replace(/-/g, ' '), icon: 'tab' }
-}
-
-watch(() => route.path, (newPath) => {
-  // No agregar rutas de login/raíz
-  if (!newPath.startsWith('/app/')) return
-  const exists = openTabs.value.some(t => t.path === newPath)
-  if (!exists) {
-    const meta = resolveTabMeta(newPath)
-    openTabs.value.push({ path: newPath, ...meta })
-  }
-}, { immediate: true })
-
-function closeTab(path: string) {
-  const idx = openTabs.value.findIndex(t => t.path === path)
-  if (idx === -1) return
-  openTabs.value.splice(idx, 1)
-  // Si cerramos la pestaña activa, navegar a la anterior o a inicio
-  if (route.path === path) {
-    const next = openTabs.value[idx - 1] ?? openTabs.value[0]
-    void router.push(next ? next.path : '/app/inicio')
-  }
-}
-
-function clearAllTabs() {
-  openTabs.value = []
-  void router.push('/app/inicio')
-}
-
+// ── Menus ──────────────────────────────────────────────────────────────────
 const maestrosMenu = [
   { label: 'Causales Terminación Contratos', to: '/app/maestros/causales', icon: 'cancel' },
   { label: 'Cuadrillas Especiales', to: '/app/maestros/cuadrillas', icon: 'groups' },
@@ -307,8 +212,6 @@ const maestrosMenu = [
   { label: 'Tipo Equipo', to: '/app/maestros/tipo-equipo', icon: 'category' },
   { label: 'Tipo Servicio', to: '/app/maestros/tipo-servicio', icon: 'design_services' },
 ]
-
-const isInMaestros = computed(() => route.path.startsWith('/app/maestros'))
 
 const asociacionesMenu = [
   { label: 'Asociacion Empleados Perfil', icon: 'badge', to: '/app/asociaciones/empleados-perfil' },
@@ -324,16 +227,12 @@ const asociacionesMenu = [
   { label: 'Asociar Tipo Equipo Implemento', icon: 'handyman', to: '/app/asociaciones/asociar-tipo-equipo-implemento' },
 ]
 
-const isInAsociaciones = computed(() => route.path.startsWith('/app/asociaciones'))
-
 const contratosMenu = [
   { label: 'Listado de Contratos', to: '/app/contratos', icon: 'description' },
   { label: 'Nuevo registro de Terminación Contrato', to: '/app/contratos/registrar-terminacion', icon: 'assignment_late' },
   { label: 'Nuevo registro de Disminución Contrato', to: '/app/contratos/registrar-disminucion', icon: 'trending_down' },
   { label: 'Contratos Terminados', to: '/app/contratos/terminados', icon: 'assignment_turned_in' },
 ]
-
-const isInContratos = computed(() => route.path.startsWith('/app/contratos'))
 
 const pedidosMenu = [
   { label: 'Pedidos Áreas',                    route: '/app/pedidos/areas',                  icon: 'map' },
@@ -357,110 +256,71 @@ const pedidosMenu = [
   { label: 'Listado Pedidos',                  route: '/app/pedidos',                         icon: 'shopping_cart' },
 ]
 
-const isInPedidos = computed(() => route.path.startsWith('/app/pedidos'))
-
 const seguridadMenu = [
   { label: 'Usuarios',                  to: '/app/seguridad/usuarios',            icon: 'manage_accounts', action: undefined as (() => void) | undefined },
-  { label: 'Soporte',                   to: '/app/seguridad/soporte',             icon: 'support_agent', action: undefined as (() => void) | undefined },
-  { label: 'Aplicaciones',              to: '/app/seguridad/aplicaciones',        icon: 'apps', action: undefined as (() => void) | undefined },
-  { label: 'Grupos',                    to: '/app/seguridad/grupos',              icon: 'group', action: undefined as (() => void) | undefined },
+  { label: 'Soporte',                   to: '/app/seguridad/soporte',             icon: 'support_agent',   action: undefined as (() => void) | undefined },
+  { label: 'Aplicaciones',              to: '/app/seguridad/aplicaciones',        icon: 'apps',            action: undefined as (() => void) | undefined },
+  { label: 'Grupos',                    to: '/app/seguridad/grupos',              icon: 'group',           action: undefined as (() => void) | undefined },
   { label: 'Grupos Aplicaciones',       to: '/app/seguridad/grupos-aplicaciones', icon: 'admin_panel_settings', action: undefined as (() => void) | undefined },
-  { label: 'Sincronizar Aplicaciones',  to: '/app/seguridad/sincronizar',         icon: 'sync', action: undefined as (() => void) | undefined },
-  { label: 'Cambiar Clave',             to: '/app/seguridad/cambiar-clave',       icon: 'lock', action: undefined as (() => void) | undefined },
-  { label: 'Cerrar Sesión',             to: '',                                   icon: 'logout', action: () => logout() },
+  { label: 'Sincronizar Aplicaciones',  to: '/app/seguridad/sincronizar',         icon: 'sync',            action: undefined as (() => void) | undefined },
+  { label: 'Cambiar Clave',             to: '/app/seguridad/cambiar-clave',       icon: 'lock',            action: undefined as (() => void) | undefined },
+  { label: 'Cerrar Sesión',             to: '',                                   icon: 'logout',          action: () => logout() },
 ]
 
-const isInSeguridad = computed(() => route.path.startsWith('/app/seguridad'))
+// ── Active helpers ──────────────────────────────────────────────────────────
+const isInMaestros    = computed(() => route.path.startsWith('/app/maestros'))
+const isInAsociaciones = computed(() => route.path.startsWith('/app/asociaciones'))
+const isInContratos   = computed(() => route.path.startsWith('/app/contratos'))
+const isInPedidos     = computed(() => route.path.startsWith('/app/pedidos'))
+const isInSeguridad   = computed(() => route.path.startsWith('/app/seguridad'))
 
-function isActive(path: string): boolean {
-  return route.path === path
+function isActive(path: string) { return route.path === path }
+function isTabActive(path: string) { return tabsStore.tabs.some(t => t.route === path) }
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+function navigate(path: string, label: string, icon: string) {
+  tabsStore.openTab(path, label, icon)
+  void router.push(path)
+}
+
+function selectTab(tabId: string) {
+  const tab = tabsStore.tabs.find(t => t.id === tabId)
+  if (!tab) return
+  tabsStore.setActiveTab(tabId)
+  void router.push(tab.route)
+}
+
+function closeTab(tabId: string) {
+  const wasActive = tabsStore.activeTabId === tabId
+  tabsStore.closeTab(tabId)
+
+  // Si había otra pestaña activa después del cierre, navegar a ella
+  if (wasActive && tabsStore.activeTab) {
+    void router.push(tabsStore.activeTab.route)
+  } else if (tabsStore.tabs.length === 0) {
+    void router.push('/app/inicio')
+  }
 }
 
 function logout() {
   authStore.logout()
+  tabsStore.closeAllTabs()
   void router.push('/')
 }
+
+// Cuando el router cambia manualmente (botón atrás, etc.), sincronizar pestaña activa
+watch(() => route.path, (newPath) => {
+  const match = tabsStore.tabs.find(t => t.route === newPath)
+  if (match && match.id !== tabsStore.activeTabId) {
+    tabsStore.setActiveTab(match.id)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 $teal-dark   : #0F5A52;
 $teal-mid    : #1B7A6E;
 $teal-light  : #26A69A;
-
-/* ── Session Tab Bar ── */
-.session-tabbar {
-  position: fixed;
-  top: 52px;   // altura del header
-  left: 0;
-  right: 0;
-  z-index: 1900;
-  background: #1a2e2a;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  height: 32px;
-  display: flex;
-  align-items: center;
-}
-
-.tab-scroll {
-  display: flex;
-  align-items: center;
-  overflow-x: auto;
-  height: 100%;
-  gap: 2px;
-  padding: 0 8px;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-}
-
-.session-tab {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 10px 0 8px;
-  height: 28px;
-  border-radius: 4px 4px 0 0;
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.65);
-  cursor: pointer;
-  white-space: nowrap;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-bottom: none;
-  transition: background 0.15s, color 0.15s;
-  user-select: none;
-
-  &:hover { background: rgba(255,255,255,0.12); color: #fff; }
-  &--active {
-    background: #0F5A52;
-    color: #fff;
-    border-color: rgba(255,255,255,0.2);
-    font-weight: 600;
-  }
-
-  .tab-label { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
-
-  .tab-close {
-    opacity: 0;
-    transition: opacity 0.15s;
-    color: rgba(255,255,255,0.7) !important;
-    margin-left: 2px;
-  }
-  &:hover .tab-close { opacity: 1; }
-  &--active .tab-close { opacity: 0.6; }
-  &--active:hover .tab-close { opacity: 1; }
-}
-
-.page-container.with-tabbar { padding-top: 32px; }
-
-.tab-clear-all {
-  flex-shrink: 0;
-  margin-left: auto;
-  margin-right: 6px;
-  color: rgba(255,255,255,0.45) !important;
-  border-radius: 4px;
-  &:hover { color: #fff !important; background: rgba(255,255,255,0.12) !important; }
-}
 
 /* ── Header ── */
 .main-header {
@@ -576,6 +436,127 @@ $teal-light  : #26A69A;
 .logout-btn {
   color: rgba(255,255,255,0.7) !important;
   &:hover { color: white !important; }
+}
+
+/* ── Tab Bar ── */
+.tab-bar {
+  background: darken($teal-dark, 4%);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: stretch;
+  min-height: 34px;
+  overflow: hidden;
+}
+
+.tab-bar-inner {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+
+  &::-webkit-scrollbar { height: 3px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 2px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+}
+
+.app-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px 0 12px;
+  min-width: 130px;
+  max-width: 200px;
+  cursor: pointer;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+  position: relative;
+
+  &:hover {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.85);
+
+    .tab-close { opacity: 1; }
+  }
+
+  &--active {
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: $teal-light;
+    }
+
+    .tab-close { opacity: 1; }
+  }
+}
+
+.tab-icon {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.tab-label {
+  font-size: 12px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  padding: 0;
+
+  &:hover {
+    background: rgba(255,255,255,0.2);
+    opacity: 1 !important;
+  }
+}
+
+.tab-close-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.08);
+  }
 }
 
 /* Page container */

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="inicio-page q-pa-lg">
     <!-- Welcome bar -->
     <div class="welcome-bar q-mb-lg">
@@ -93,7 +93,7 @@ const maestrosMenu = [
 </script>
 
 <style lang="scss" scoped>
-.inicio-page { max-width: 1400px; margin: 0 auto; }
+.inicio-page { width: 100%; }
 
 .welcome-bar {
   background: white;

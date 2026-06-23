@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="registra-pedidos-page q-pa-md">
 
     <!-- ═══════════════════════════ PAGE HEADER ═══════════════════════════ -->
@@ -8,12 +8,6 @@
           <q-icon name="assignment_add" color="white" size="28px" />
           <div>
             <div class="text-h6 text-white text-weight-bold q-ma-none">Registrar Pedido</div>
-            <q-breadcrumbs class="text-caption" active-color="white" separator-color="white" style="opacity:0.8">
-              <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-              <q-breadcrumbs-el label="Pedidos" />
-              <q-breadcrumbs-el label="Registrar" />
-            </q-breadcrumbs>
-          </div>
         </div>
       </div>
     </div>
@@ -770,16 +764,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .registra-pedidos-page {
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* ── Page header ── */
-.page-header {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
 .header-gradient {
   background: linear-gradient(135deg, #0F5A52 0%, #26A69A 100%);
   padding: 18px 24px;

@@ -1,17 +1,5 @@
 <template>
   <q-page class="cesantias-page q-pa-lg">
-    <!-- Header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon name="account_balance" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">Diligenciar Cesantías</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Cesantías" />
-        <q-breadcrumbs-el label="Diligenciar" />
-      </q-breadcrumbs>
-    </div>
 
     <!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
@@ -407,15 +395,9 @@ onMounted(() => { void Promise.all([loadData(), loadEmpleadoOptions()]) })
 </script>
 
 <style lang="scss" scoped>
-.cesantias-page { max-width: 1400px; margin: 0 auto; }
+.cesantias-page { width: 100%; }
 
-.page-header {
-  background: white;
-  border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
+
 
 .toolbar-section {
   display: flex;

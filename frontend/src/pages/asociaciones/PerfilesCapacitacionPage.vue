@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="pc-page q-pa-lg">
     <!-- Teal gradient header -->
     <div class="page-header q-mb-lg">
@@ -6,13 +6,6 @@
         <q-icon name="school" size="28px" class="q-mr-sm" style="color:#fff" />
         <span class="text-h5 text-white text-weight-bold">Listado Perfil Capacitación</span>
       </div>
-      <q-breadcrumbs active-color="teal-1" class="text-caption" style="color:rgba(255,255,255,0.75)">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" style="color:rgba(255,255,255,0.75)" />
-        <q-breadcrumbs-el label="Asociaciones" style="color:rgba(255,255,255,0.75)" />
-        <q-breadcrumbs-el label="Perfiles Capacitación" style="color:#fff" />
-      </q-breadcrumbs>
-    </div>
-
     <!-- Toolbar: filter + search -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section class="q-pa-md">
@@ -149,14 +142,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.pc-page { max-width: 1200px; margin: 0 auto; }
-
-.page-header {
-  background: linear-gradient(135deg, #00695c 0%, #00897b 100%);
-  border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 2px 8px rgba(0, 105, 92, 0.35);
-}
+.pc-page { width: 100%; }
 
 .table-toolbar {
   display: flex; align-items: center; justify-content: space-between;

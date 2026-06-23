@@ -1,17 +1,10 @@
-<template>
+﻿<template>
   <q-page class="maestro-page q-pa-lg">
     <div class="page-header q-mb-lg">
       <div class="page-title-area">
         <q-icon name="lock" color="primary" size="28px" class="q-mr-sm" />
         <h5 class="q-ma-none text-weight-bold text-grey-9">Cambiar Contraseña</h5>
       </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Seguridad" />
-        <q-breadcrumbs-el label="Cambiar Contraseña" />
-      </q-breadcrumbs>
-    </div>
-
     <q-card flat bordered style="max-width: 440px; margin: 40px auto">
       <q-card-section class="q-pa-lg">
         <q-form @submit.prevent="cambiarClave">
@@ -108,10 +101,5 @@ async function cambiarClave() {
 </script>
 
 <style lang="scss" scoped>
-.maestro-page { max-width: 1400px; margin: 0 auto; }
-.page-header {
-  background: white; border-radius: 12px; padding: 20px 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
+.maestro-page { width: 100%; }
 </style>
