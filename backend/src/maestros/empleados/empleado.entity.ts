@@ -32,9 +32,18 @@ export class Empleado {
   @Column({ name: 'personal_interno', nullable: true })
   personal_interno: boolean;
 
+  @Column({ name: 'codigo_alterno', nullable: true })
+  codigo_alterno: string;
+
   @Column({ nullable: true })
   sexo: number;
 
   @Column({ nullable: true })
   perfil: number;
+
+  @Column({ name: 'profesion_codigo', nullable: true })
+  profesion_codigo: number;
+
+  @Column({ name: 'ciudad_codigo', nullable: true })
+  ciudad_codigo: string;
 }

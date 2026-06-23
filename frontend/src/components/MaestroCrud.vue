@@ -228,6 +228,7 @@ const props = defineProps<{
   defaultForm: Record<string, unknown>
   section?: string
   pkField?: string
+  fetchOnEdit?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -304,9 +305,20 @@ async function loadData() {
   }
 }
 
-function openForm(row: Record<string, unknown> | null) {
+async function openForm(row: Record<string, unknown> | null) {
   editingRow.value = row
-  const next = row ? { ...row } : { ...props.defaultForm }
+  let next = row ? { ...row } : { ...props.defaultForm }
+  // Cuando la lista proviene de una vista, el registro de la fila puede traer
+  // columnas no editables. Con fetchOnEdit se trae el registro limpio de la tabla.
+  if (row && props.fetchOnEdit) {
+    const pk = props.pkField ?? 'id'
+    try {
+      const { data } = await api.get(`${props.endpoint}/${row[pk] as string}`)
+      next = { ...data }
+    } catch {
+      // si falla, se usa la fila tal cual
+    }
+  }
   // Sync all keys: remove stale ones (e.g. 'id' left from a previous edit), update/add the rest
   const allKeys = new Set([...Object.keys(formData), ...Object.keys(next)])
   for (const k of allKeys) {

@@ -28,6 +28,11 @@
           <q-input v-model="filterFechaDesde" type="date" label="Fecha desde" outlined dense stack-label style="min-width:155px" />
           <q-input v-model="filterFechaHasta" type="date" label="Fecha hasta" outlined dense stack-label style="min-width:155px" />
           <q-btn flat dense round icon="refresh" :loading="loading" @click="loadData"><q-tooltip>Actualizar</q-tooltip></q-btn>
+          <q-space />
+          <q-btn unelevated no-caps icon="assignment_late" label="Nueva Terminación" color="red-7"
+            class="q-ml-sm" @click="openTerminacion" />
+          <q-btn unelevated no-caps icon="trending_down" label="Nueva Disminución" color="orange-8"
+            @click="openDisminucion" />
         </div>
         <div v-if="filterTipo || filterPerfil || filterFechaDesde || filterFechaHasta" class="row q-gutter-xs items-center">
           <span class="text-caption text-grey-6">Filtros activos:</span>
@@ -162,6 +167,125 @@
       </q-card>
     </q-dialog>
 
+    <!-- ═══════ MODAL NUEVA TERMINACIÓN ═══════ -->
+    <q-dialog v-model="showTerminacion" persistent>
+      <q-card style="min-width:560px;max-width:640px">
+        <div class="modal-topbar modal-red">
+          <q-icon name="assignment_late" color="white" size="20px" class="q-mr-sm" />
+          <span class="text-subtitle1 text-white text-weight-bold">Nuevo registro de Terminación Contrato</span>
+          <q-space />
+          <q-btn flat round dense icon="close" color="white" v-close-popup />
+        </div>
+        <q-form ref="formTermRef" @submit="submitTerminacion" class="q-pa-lg q-gutter-y-md">
+          <q-select v-model="fTerm.id_cliente" :options="clienteFilteredT"
+            option-value="id" option-label="nombre" emit-value map-options
+            label="Cliente *" outlined dense color="primary"
+            use-input input-debounce="200" @filter="filterClienteT" :loading="loadingLk"
+            :rules="[(v) => !!v || 'Requerido']" hint="DIGITE PARA BUSCAR">
+            <template #no-option><q-item><q-item-section class="text-grey">Sin resultados</q-item-section></q-item></template>
+          </q-select>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-input v-model.number="fTerm.id_supervisor" label="Id Supervisor *" outlined dense color="primary"
+                type="number" @blur="loadSupT" :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+            <div class="col-6">
+              <q-input v-model="supNombreT" label="Nombre supervisor" outlined dense readonly bg-color="grey-2" />
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-input v-model="fTerm.fecha_inicio" label="Fecha Inicio *" outlined dense color="primary"
+                type="date" stack-label :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+            <div class="col-6">
+              <q-input v-model="fTerm.fecha_terminacion" label="Fecha Terminación *" outlined dense color="primary"
+                type="date" stack-label :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-input v-model.number="fTerm.personas" label="Personas *" outlined dense color="primary"
+                type="number" min="1" :rules="[(v) => (!!v && v > 0) || 'Requerido']" />
+            </div>
+            <div class="col-6">
+              <q-select v-model="fTerm.id_causa" :options="causalOpts2"
+                option-value="id" option-label="nombre" emit-value map-options
+                label="Causal *" outlined dense color="primary" :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+          </div>
+          <q-input v-model="fTerm.observacion" label="Observación *" outlined dense color="primary"
+            type="textarea" rows="3" autogrow :rules="[(v) => !!v || 'Requerido']" />
+          <p class="text-caption text-negative q-ma-none">* Campos obligatorios</p>
+          <div class="row justify-end q-gutter-sm">
+            <q-btn flat no-caps label="Cancelar" v-close-popup />
+            <q-btn unelevated no-caps icon="add" label="Agregar" color="red-7" type="submit" :loading="savingT" />
+          </div>
+        </q-form>
+      </q-card>
+    </q-dialog>
+
+    <!-- ═══════ MODAL NUEVA DISMINUCIÓN ═══════ -->
+    <q-dialog v-model="showDisminucion" persistent>
+      <q-card style="min-width:560px;max-width:640px">
+        <div class="modal-topbar modal-orange">
+          <q-icon name="trending_down" color="white" size="20px" class="q-mr-sm" />
+          <span class="text-subtitle1 text-white text-weight-bold">Nuevo registro de Disminución Contrato</span>
+          <q-space />
+          <q-btn flat round dense icon="close" color="white" v-close-popup />
+        </div>
+        <q-form ref="formDismRef" @submit="submitDisminucion" class="q-pa-lg q-gutter-y-md">
+          <q-select v-model="fDism.id_cliente" :options="clienteFilteredD"
+            option-value="id" option-label="nombre" emit-value map-options
+            label="Cliente *" outlined dense color="primary"
+            use-input input-debounce="200" @filter="filterClienteD" :loading="loadingLk"
+            :rules="[(v) => !!v || 'Requerido']" hint="DIGITE PARA BUSCAR">
+            <template #no-option><q-item><q-item-section class="text-grey">Sin resultados</q-item-section></q-item></template>
+          </q-select>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-input v-model.number="fDism.id_supervisor" label="Coordinador Operativo *" outlined dense color="primary"
+                type="number" @blur="loadSupD" :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+            <div class="col-6">
+              <q-input v-model="supNombreD" label="Nombre Coordinador" outlined dense readonly bg-color="grey-2" />
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-select v-model="fDism.perfil" :options="perfilOpts2"
+                option-value="id" option-label="nombre" emit-value map-options
+                label="Perfil" outlined dense color="primary" clearable />
+            </div>
+            <div class="col-6">
+              <q-input v-model="fDism.fecha_terminacion" label="Fecha Terminación *" outlined dense color="primary"
+                type="date" stack-label :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div class="col-6">
+              <q-input v-model.number="fDism.personas" label="Personas *" outlined dense color="primary"
+                type="number" min="1" :rules="[(v) => (!!v && v > 0) || 'Requerido']" />
+            </div>
+            <div class="col-6">
+              <q-select v-model="fDism.id_causa" :options="causalOpts2"
+                option-value="id" option-label="nombre" emit-value map-options
+                label="Causal *" outlined dense color="primary" :rules="[(v) => !!v || 'Requerido']" />
+            </div>
+          </div>
+          <q-input v-model="fDism.fecha_inicio" label="Fecha Inicio *" outlined dense color="primary"
+            type="date" stack-label :rules="[(v) => !!v || 'Requerido']" />
+          <q-input v-model="fDism.observacion" label="Observación *" outlined dense color="primary"
+            type="textarea" rows="3" autogrow :rules="[(v) => !!v || 'Requerido']" />
+          <p class="text-caption text-negative q-ma-none">* Campos obligatorios</p>
+          <div class="row justify-end q-gutter-sm">
+            <q-btn flat no-caps label="Cancelar" v-close-popup />
+            <q-btn unelevated no-caps icon="add" label="Agregar" color="orange-8" type="submit" :loading="savingD" />
+          </div>
+        </q-form>
+      </q-card>
+    </q-dialog>
+
     <!-- Anular confirm -->
     <q-dialog v-model="showAnular">
       <q-card style="min-width:340px">
@@ -181,9 +305,12 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { useQuasar, QForm } from 'quasar'
 import { api } from 'src/boot/axios'
 import { formatDate } from 'src/utils/date'
+
+interface Cliente { id: number; nit: string; nombre: string }
+interface LkOpt   { id: number; nombre: string }
 
 interface ContratoRow {
   id: number
@@ -378,6 +505,140 @@ async function doAnular() {
   finally { anulando.value = false }
 }
 
+// ══════════════════════════════════════════════
+// MODALES TERMINACIÓN / DISMINUCIÓN
+// ══════════════════════════════════════════════
+const loadingLk = ref(false)
+const clientes2 = ref<Cliente[]>([])
+const causalOpts2 = ref<LkOpt[]>([])
+const perfilOpts2 = ref<LkOpt[]>([])
+
+async function loadLookups2() {
+  if (clientes2.value.length) return   // ya cargados
+  loadingLk.value = true
+  try {
+    const [cli, cau, per] = await Promise.all([
+      api.get('/lookup/clientes'),
+      api.get('/lookup/causales'),
+      api.get('/lookup/perfiles'),
+    ])
+    clientes2.value = cli.data
+    clienteFilteredT.value = cli.data
+    clienteFilteredD.value = cli.data
+    causalOpts2.value = cau.data
+    perfilOpts2.value = per.data
+  } finally { loadingLk.value = false }
+}
+
+// ── Terminación ──
+const showTerminacion = ref(false)
+const formTermRef = ref<QForm | null>(null)
+const savingT = ref(false)
+const supNombreT = ref('')
+const clienteFilteredT = ref<Cliente[]>([])
+const today = new Date().toISOString().slice(0, 10)
+
+const fTerm = reactive({
+  id_cliente: null as number | null,
+  id_supervisor: null as number | null,
+  fecha_inicio: today, fecha_terminacion: today,
+  personas: null as number | null,
+  id_causa: null as number | null,
+  observacion: '',
+})
+
+function filterClienteT(val: string, update: (fn: () => void) => void) {
+  update(() => {
+    const q = val.toLowerCase()
+    clienteFilteredT.value = q
+      ? clientes2.value.filter(c => c.nombre.toLowerCase().includes(q) || (c.nit ?? '').includes(q))
+      : clientes2.value
+  })
+}
+async function loadSupT() {
+  if (!fTerm.id_supervisor) { supNombreT.value = ''; return }
+  const { data } = await api.get(`/lookup/empleado/${fTerm.id_supervisor}`).catch(() => ({ data: null }))
+  supNombreT.value = data?.nombre ?? ''
+}
+async function openTerminacion() {
+  await loadLookups2()
+  showTerminacion.value = true
+}
+async function submitTerminacion() {
+  savingT.value = true
+  try {
+    await api.post('/contratos', { tipo: 1, fecha: today, id_cliente: fTerm.id_cliente,
+      id_supervisor: fTerm.id_supervisor, id_causa: fTerm.id_causa, personas: fTerm.personas,
+      fecha_inicio: fTerm.fecha_inicio, fecha_terminacion: fTerm.fecha_terminacion, observacion: fTerm.observacion })
+    $q.notify({ type: 'positive', message: 'Terminación registrada', icon: 'check_circle' })
+    showTerminacion.value = false
+    Object.assign(fTerm, { id_cliente: null, id_supervisor: null, fecha_inicio: today,
+      fecha_terminacion: today, personas: null, id_causa: null, observacion: '' })
+    supNombreT.value = ''
+    formTermRef.value?.resetValidation()
+    await loadData()
+  } catch (e: unknown) {
+    const err = e as { response?: { data?: { message?: string | string[] } } }
+    const msg = err.response?.data?.message
+    $q.notify({ type: 'negative', message: Array.isArray(msg) ? msg.join(', ') : (msg ?? 'Error') })
+  } finally { savingT.value = false }
+}
+
+// ── Disminución ──
+const showDisminucion = ref(false)
+const formDismRef = ref<QForm | null>(null)
+const savingD = ref(false)
+const supNombreD = ref('')
+const clienteFilteredD = ref<Cliente[]>([])
+
+const fDism = reactive({
+  id_cliente: null as number | null,
+  id_supervisor: null as number | null,
+  perfil: null as number | null,
+  fecha_inicio: today, fecha_terminacion: today,
+  personas: null as number | null,
+  id_causa: null as number | null,
+  observacion: '',
+})
+
+function filterClienteD(val: string, update: (fn: () => void) => void) {
+  update(() => {
+    const q = val.toLowerCase()
+    clienteFilteredD.value = q
+      ? clientes2.value.filter(c => c.nombre.toLowerCase().includes(q) || (c.nit ?? '').includes(q))
+      : clientes2.value
+  })
+}
+async function loadSupD() {
+  if (!fDism.id_supervisor) { supNombreD.value = ''; return }
+  const { data } = await api.get(`/lookup/empleado/${fDism.id_supervisor}`).catch(() => ({ data: null }))
+  supNombreD.value = data?.nombre ?? ''
+}
+async function openDisminucion() {
+  await loadLookups2()
+  showDisminucion.value = true
+}
+async function submitDisminucion() {
+  savingD.value = true
+  try {
+    await api.post('/contratos', { tipo: 2, fecha: today, id_cliente: fDism.id_cliente,
+      id_supervisor: fDism.id_supervisor, id_causa: fDism.id_causa, perfil: fDism.perfil ?? undefined,
+      personas: fDism.personas, fecha_inicio: fDism.fecha_inicio,
+      fecha_terminacion: fDism.fecha_terminacion, observacion: fDism.observacion })
+    $q.notify({ type: 'positive', message: 'Disminución registrada', icon: 'check_circle' })
+    showDisminucion.value = false
+    Object.assign(fDism, { id_cliente: null, id_supervisor: null, perfil: null, fecha_inicio: today,
+      fecha_terminacion: today, personas: null, id_causa: null, observacion: '' })
+    supNombreD.value = ''
+    formDismRef.value?.resetValidation()
+    await loadData()
+  } catch (e: unknown) {
+    const err = e as { response?: { data?: { message?: string | string[] } } }
+    const msg = err.response?.data?.message
+    $q.notify({ type: 'negative', message: Array.isArray(msg) ? msg.join(', ') : (msg ?? 'Error') })
+  } finally { savingD.value = false }
+}
+
 onMounted(() => { void loadData() })
 </script>
 
@@ -397,6 +658,14 @@ onMounted(() => { void loadData() })
 .search-input { width: 280px; }
 
 .tipo-badge { font-size: 11px; font-weight: 600; }
+
+.modal-topbar {
+  display: flex; align-items: center;
+  padding: 14px 20px;
+  border-radius: 4px 4px 0 0;
+}
+.modal-red    { background: linear-gradient(135deg, #c62828, #e53935); }
+.modal-orange { background: linear-gradient(135deg, #e65100, #f57c00); }
 
 .contratos-table {
   :deep(thead tr th) {

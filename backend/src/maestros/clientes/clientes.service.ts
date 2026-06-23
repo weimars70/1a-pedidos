@@ -5,7 +5,7 @@ import { Cliente } from './cliente.entity';
 
 const SELECT_CLIENTE = `
   SELECT
-    c.codigo AS id, c.ident, c.nombre, c.ciudad_codigo,
+    c.codigo AS id, c.id AS codigo, c.ident, c.nombre, c.ciudad_codigo,
     ci.nombre AS ciudad_nombre,
     c.direccion, c.telefono, c.correo, c.contacto,
     c.centro_costos, c.tope_credito,

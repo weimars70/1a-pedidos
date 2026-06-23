@@ -16,6 +16,10 @@ export class CreateEmpleadoDto {
   @IsString()
   ident?: string;
 
+  @IsOptional()
+  @IsString()
+  codigo_alterno?: string;
+
   @IsString()
   @IsNotEmpty({ message: 'El nombre es requerido' })
   nombre: string;
@@ -51,4 +55,12 @@ export class CreateEmpleadoDto {
   @IsOptional()
   @IsNumber()
   perfil?: number;
+
+  @IsOptional()
+  @IsNumber()
+  profesion_codigo?: number;
+
+  @IsOptional()
+  @IsString()
+  ciudad_codigo?: string;
 }

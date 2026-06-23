@@ -61,4 +61,16 @@ export class LookupService {
       `SELECT id, nombre FROM causal_terminacion_contrato ORDER BY nombre`,
     );
   }
+
+  getProfesiones() {
+    return this.dataSource.query(
+      `SELECT codigo AS id, nombre FROM profesiones ORDER BY nombre`,
+    );
+  }
+
+  getSexo() {
+    return this.dataSource.query(
+      `SELECT id, nombre FROM sexo ORDER BY id`,
+    );
+  }
 }

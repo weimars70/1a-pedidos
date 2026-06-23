@@ -31,6 +31,12 @@ export class LookupController {
   @Get('causales')
   getCausales() { return this.svc.getCausales(); }
 
+  @Get('profesiones')
+  getProfesiones() { return this.svc.getProfesiones(); }
+
+  @Get('sexo')
+  getSexo() { return this.svc.getSexo(); }
+
   @Get('empleado/:codigo')
   getEmpleado(@Param('codigo', ParseIntPipe) codigo: number) {
     return this.svc.getEmpleado(codigo);

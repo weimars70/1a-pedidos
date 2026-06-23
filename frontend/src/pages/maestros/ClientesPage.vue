@@ -89,38 +89,23 @@
                 <div class="section-title">
                   <q-icon name="info_outline" size="16px" class="q-mr-xs" />Datos generales
                 </div>
-                <div class="field-grid-2">
-                  <q-input v-model="form.ident" label="NIT / Cédula" outlined dense color="primary" />
-                  <q-input v-model="form.nombre" label="Nombre / Razón social" outlined dense color="primary"
+
+                <!-- Fila 1: Id · Codigo · Centro Costos · Ident · Nombre -->
+                <div class="field-grid-5 q-mb-sm">
+                  <q-input v-model="form.id" label="Id" outlined dense color="primary" readonly />
+                  <q-input v-model="form.codigo" label="Codigo" outlined dense color="primary" readonly />
+                  <q-input v-model="form.centro_costos" label="Centro Costos" outlined dense color="primary" />
+                  <q-input v-model="form.ident" label="Ident" outlined dense color="primary" />
+                  <q-input v-model="form.nombre" label="Nombre" outlined dense color="primary"
                     :rules="[(v) => !!v || 'Requerido']" />
                 </div>
-                <div class="field-grid-2 q-mt-sm">
-                  <q-input v-model="form.centro_costos" label="Centro de costos" outlined dense color="primary" />
-                  <q-input v-model="form.tope_credito" label="Tope de crédito" outlined dense color="primary"
-                    type="number" prefix="$" />
-                </div>
-                <div class="q-mt-sm">
-                  <q-select
-                    v-model="form.codigo_sector"
-                    :options="sectorOpts" option-value="value" option-label="label"
-                    emit-value map-options label="Sector" outlined dense color="primary" clearable
-                  />
-                </div>
-                <div class="q-mt-sm">
-                  <q-input v-model="form.observaciones" label="Observaciones" outlined dense color="primary"
-                    type="textarea" rows="3" autogrow />
-                </div>
-                <div class="q-mt-sm">
-                  <q-toggle v-model="form.activo" label="Cliente activo" color="primary" />
-                </div>
-              </div>
 
-              <!-- Section: Contacto -->
-              <div class="form-section q-mt-lg">
-                <div class="section-title">
-                  <q-icon name="location_on" size="16px" class="q-mr-xs" />Ubicación y contacto
-                </div>
-                <div class="q-gutter-y-sm">
+                <!-- Fila 2: Direccion · Telefono · Tope Credito · Ciudad -->
+                <div class="field-grid-4 q-mb-sm">
+                  <q-input v-model="form.direccion" label="Direccion" outlined dense color="primary" />
+                  <q-input v-model="form.telefono" label="Telefono" outlined dense color="primary" />
+                  <q-input v-model="form.tope_credito" label="Tope Credito" outlined dense color="primary"
+                    type="number" prefix="$" />
                   <q-select
                     v-model="form.ciudad_codigo"
                     :options="ciudadOpts" option-value="value" option-label="label"
@@ -130,24 +115,35 @@
                   >
                     <template #no-option><q-item><q-item-section class="text-grey">Sin resultados</q-item-section></q-item></template>
                   </q-select>
-                  <q-input v-model="form.direccion" label="Dirección" outlined dense color="primary" />
-                  <div class="field-grid-2">
-                    <q-input v-model="form.telefono" label="Teléfono" outlined dense color="primary" />
-                    <q-input v-model="form.correo" label="Correo electrónico" outlined dense color="primary" type="email" />
-                  </div>
-                  <div class="field-grid-2">
-                    <q-input v-model="form.contacto" label="Persona de contacto" outlined dense color="primary" />
-                    <q-select
-                      v-model="form.cod_supervisor"
-                      :options="supervisorOpts" option-value="value" option-label="label"
-                      emit-value map-options use-input input-debounce="0"
-                      label="Supervisor" outlined dense color="primary" clearable
-                      @filter="filterSupervisores"
-                    >
-                      <template #no-option><q-item><q-item-section class="text-grey">Sin resultados</q-item-section></q-item></template>
-                    </q-select>
-                  </div>
                 </div>
+
+                <!-- Fila 3: Correo · Contacto · Supervisor -->
+                <div class="field-grid-3 q-mb-sm">
+                  <q-input v-model="form.correo" label="Correo" outlined dense color="primary" type="email" />
+                  <q-input v-model="form.contacto" label="Contacto" outlined dense color="primary" />
+                  <q-select
+                    v-model="form.cod_supervisor"
+                    :options="supervisorOpts" option-value="value" option-label="label"
+                    emit-value map-options use-input input-debounce="0"
+                    label="Supervisor" outlined dense color="primary" clearable
+                    @filter="filterSupervisores"
+                  >
+                    <template #no-option><q-item><q-item-section class="text-grey">Sin resultados</q-item-section></q-item></template>
+                  </q-select>
+                </div>
+
+                <!-- Fila 4: Sector · Observaciones -->
+                <div class="field-grid-2 q-mb-sm">
+                  <q-select
+                    v-model="form.codigo_sector"
+                    :options="sectorOpts" option-value="value" option-label="label"
+                    emit-value map-options label="Sector" outlined dense color="primary" clearable
+                  />
+                  <q-input v-model="form.observaciones" label="Observaciones" outlined dense color="primary"
+                    type="textarea" rows="2" autogrow />
+                </div>
+
+                <q-toggle v-model="form.activo" label="Cliente activo" color="primary" />
               </div>
             </div>
 
@@ -267,15 +263,17 @@ const filtered = computed(() => {
 })
 
 const columns = [
-  { name: 'actions',         label: '',          field: 'actions',          align: 'center' as const, sortable: false },
-  { name: 'id',              label: 'Cód.',       field: 'id',               align: 'left' as const,   sortable: true },
-  { name: 'ident',           label: 'NIT/Ced.',   field: 'ident',            align: 'left' as const,   sortable: true },
-  { name: 'nombre',          label: 'Nombre',     field: 'nombre',           align: 'left' as const,   sortable: true },
-  { name: 'ciudad_nombre',   label: 'Ciudad',     field: 'ciudad_nombre',    align: 'left' as const,   sortable: true },
-  { name: 'telefono',        label: 'Teléfono',   field: 'telefono',         align: 'left' as const,   sortable: false },
-  { name: 'correo',          label: 'Correo',     field: 'correo',           align: 'left' as const,   sortable: false },
-  { name: 'sector_nombre',   label: 'Sector',     field: 'sector_nombre',    align: 'left' as const,   sortable: false },
-  { name: 'supervisor_nombre', label: 'Supervisor', field: 'supervisor_nombre', align: 'left' as const, sortable: false },
+  { name: 'actions',           label: '',               field: 'actions',           align: 'center' as const, sortable: false },
+  { name: 'id',                label: 'Id',             field: 'id',                align: 'left' as const,   sortable: true  },
+  { name: 'codigo',            label: 'Codigo',         field: 'codigo',            align: 'left' as const,   sortable: true  },
+  { name: 'ident',             label: 'Identificacion', field: 'ident',             align: 'left' as const,   sortable: true  },
+  { name: 'nombre',            label: 'Nombre',         field: 'nombre',            align: 'left' as const,   sortable: true  },
+  { name: 'telefono',          label: 'Telefono',       field: 'telefono',          align: 'left' as const,   sortable: false },
+  { name: 'correo',            label: 'Correo',         field: 'correo',            align: 'left' as const,   sortable: false },
+  { name: 'supervisor_nombre', label: 'Sup Nombre',     field: 'supervisor_nombre', align: 'left' as const,   sortable: false },
+  { name: 'contacto',          label: 'Contacto',       field: 'contacto',          align: 'left' as const,   sortable: false },
+  { name: 'centro_costos',     label: 'Centro Costos',  field: 'centro_costos',     align: 'left' as const,   sortable: false },
+  { name: 'direccion',         label: 'Direccion',      field: 'direccion',         align: 'left' as const,   sortable: false },
 ]
 
 function onSearch() { /* computed handles */ }
@@ -332,6 +330,7 @@ const editingRow = ref<ClienteRow | null>(null)
 const saving     = ref(false)
 
 const form = reactive({
+  id: null as number | null, codigo: null as number | null,
   ident: '', nombre: '', ciudad_codigo: null as string | null,
   direccion: '', telefono: '', correo: '', contacto: '',
   centro_costos: '', tope_credito: null as number | null,
@@ -354,6 +353,7 @@ async function openForm(row: ClienteRow | null) {
   editingRow.value = row
   if (row) {
     Object.assign(form, {
+      id: row.id ?? null, codigo: (row as Record<string, unknown>).codigo ?? null,
       ident: row.ident ?? '', nombre: row.nombre ?? '',
       ciudad_codigo: row.ciudad_codigo ?? null,
       direccion: row.direccion ?? '', telefono: row.telefono ?? '',
@@ -371,6 +371,7 @@ async function openForm(row: ClienteRow | null) {
     } catch { contactos.value = [] }
   } else {
     Object.assign(form, {
+      id: null, codigo: null,
       ident: '', nombre: '', ciudad_codigo: null, direccion: '', telefono: '',
       correo: '', contacto: '', centro_costos: '', tope_credito: null,
       cod_supervisor: null, codigo_sector: null, observaciones: '', activo: true,
@@ -537,6 +538,24 @@ onMounted(() => { void Promise.all([loadData(), loadOptions()]) })
   gap: 12px;
 }
 .field-grid-2 .col-span-2 { grid-column: 1 / -1; }
+
+.field-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.field-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.field-grid-5 {
+  display: grid;
+  grid-template-columns: 0.6fr 0.6fr 1fr 0.8fr 1.4fr;
+  gap: 12px;
+}
 
 /* ── Contacts ── */
 .contacts-section { height: 100%; }
