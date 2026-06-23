@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <q-page class="registrar-esp-page q-pa-md">
 
     <!-- ═══════════════════════════ PAGE HEADER ═══════════════════════════ -->
@@ -8,12 +8,6 @@
           <q-icon name="star_rate" color="white" size="28px" />
           <div>
             <div class="text-h6 text-white text-weight-bold q-ma-none">Registrar Pedido Especial</div>
-            <q-breadcrumbs class="text-caption" active-color="white" separator-color="white" style="opacity:0.8">
-              <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-              <q-breadcrumbs-el label="Pedidos" />
-              <q-breadcrumbs-el label="Pedidos Especiales" />
-            </q-breadcrumbs>
-          </div>
         </div>
       </div>
     </div>
@@ -330,7 +324,7 @@
         bordered
         dense
         :loading="loadingList"
-        :rows-per-page-options="[25, 50, 100]"
+        :rows-per-page-options="[12, 25, 50, 100]"
         no-data-label="Sin pedidos especiales registrados"
       >
         <template #body-cell-acciones="props">
@@ -948,16 +942,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .registrar-esp-page {
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* ── Page header ── */
-.page-header {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
 .header-gradient {
   background: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);
   padding: 18px 24px;

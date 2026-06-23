@@ -9,7 +9,7 @@ declare module '@vue/runtime-core' {
 }
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:3033',
   headers: { 'Cache-Control': 'no-cache' },
 })
 

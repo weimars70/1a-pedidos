@@ -1,19 +1,5 @@
-<template>
+﻿<template>
   <q-page class="contratos-terminados-page q-pa-lg">
-
-    <!-- Header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon name="assignment_turned_in" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">Contratos Terminados</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Contratos" to="/app/contratos" />
-        <q-breadcrumbs-el label="Terminados" />
-      </q-breadcrumbs>
-    </div>
-
     <!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section>
@@ -43,7 +29,7 @@
     <!-- Table -->
     <q-card flat bordered>
       <q-table :rows="filtered" :columns="columns" :loading="loading" row-key="id"
-        flat :rows-per-page-options="[25,50,100]" class="contratos-terminados-table">
+        flat :rows-per-page-options="[12, 25, 50, 100]" class="contratos-terminados-table">
         <template #body-cell-tipo="props">
           <q-td :props="props">
             <q-badge
@@ -158,13 +144,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.contratos-terminados-page { max-width: 1400px; margin: 0 auto; }
-
-.page-header {
-  background: white; border-radius: 12px;
-  padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
+.contratos-terminados-page { width: 100%; }
 
 .toolbar-row {
   display: flex; align-items: center; justify-content: space-between;

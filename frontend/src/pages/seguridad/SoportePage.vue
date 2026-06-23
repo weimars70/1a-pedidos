@@ -1,18 +1,5 @@
-<template>
+﻿<template>
   <q-page class="maestro-page q-pa-lg">
-    <!-- Header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon name="support_agent" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">Soporte</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Seguridad" />
-        <q-breadcrumbs-el label="Soporte" />
-      </q-breadcrumbs>
-    </div>
-
     <!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section class="toolbar-section">
@@ -33,7 +20,7 @@
     <!-- Table -->
     <q-card flat bordered>
       <q-table :rows="filteredRows" :columns="tableColumns" :loading="loading" row-key="id" flat
-        :rows-per-page-options="[10, 25, 50, 100]" :rows-per-page="25" class="soporte-table">
+        :rows-per-page-options="[12, 25, 50, 100]" :rows-per-page="25" class="soporte-table">
 
         <template #body-cell-estado="props">
           <q-td :props="props">
@@ -290,12 +277,7 @@ onMounted(loadData)
 </script>
 
 <style lang="scss" scoped>
-.maestro-page { max-width: 1400px; margin: 0 auto; }
-.page-header {
-  background: white; border-radius: 12px; padding: 20px 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
+.maestro-page { width: 100%; }
 .toolbar-section { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px !important; }
 .toolbar-left { display: flex; align-items: center; gap: 6px; }
 .toolbar-right { display: flex; align-items: center; gap: 8px; }

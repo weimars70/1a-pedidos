@@ -1,17 +1,5 @@
 <template>
   <q-page class="asociacion-page q-pa-lg">
-    <!-- Page header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon :name="icon" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">{{ title }}</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Asociaciones" />
-        <q-breadcrumbs-el :label="title" />
-      </q-breadcrumbs>
-    </div>
 
     <!-- Form card -->
     <q-card flat bordered class="q-mb-md shadow-2">
@@ -134,8 +122,8 @@
         flat
         dense
         bordered
-        :rows-per-page-options="[15, 25, 50, 100, 0]"
-        :rows-per-page="25"
+        :rows-per-page-options="[12, 25, 50, 100, 0]"
+        :rows-per-page="12"
         class="asociacion-table"
       >
         <!-- Actions column -->
@@ -390,23 +378,7 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.asociacion-page {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.page-header {
-  background: white;
-  border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-.page-title-area {
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-}
+.asociacion-page { width: 100%; }
 
 .form-section {
   padding: 20px 24px !important;

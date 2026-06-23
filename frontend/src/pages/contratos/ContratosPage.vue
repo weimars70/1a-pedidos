@@ -1,17 +1,8 @@
-<template>
+﻿<template>
   <q-page class="contratos-page q-pa-lg">
 
     <!-- Header -->
-    <div class="page-header q-mb-lg">
-      <div class="page-title-area">
-        <q-icon name="description" color="primary" size="28px" class="q-mr-sm" />
-        <h5 class="q-ma-none text-weight-bold text-grey-9">Contratos</h5>
-      </div>
-      <q-breadcrumbs class="text-caption q-mt-xs" active-color="primary">
-        <q-breadcrumbs-el label="Inicio" to="/app/inicio" />
-        <q-breadcrumbs-el label="Contratos" />
-      </q-breadcrumbs>
-    </div>
+  
 
     <!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
@@ -42,7 +33,7 @@
     <!-- Table -->
     <q-card flat bordered>
       <q-table :rows="filtered" :columns="columns" :loading="loading" row-key="id"
-        flat :rows-per-page-options="[25,50,100]" class="contratos-table">
+        flat :rows-per-page-options="[12, 25, 50, 100]" class="contratos-table">
         <template #body-cell-tipo="props">
           <q-td :props="props">
             <q-badge
@@ -382,13 +373,7 @@ onMounted(() => { void loadData() })
 </script>
 
 <style lang="scss" scoped>
-.contratos-page { max-width: 1400px; margin: 0 auto; }
-
-.page-header {
-  background: white; border-radius: 12px;
-  padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.page-title-area { display: flex; align-items: center; margin-bottom: 4px; }
+.contratos-page { width: 100%; }
 
 .toolbar-row {
   display: flex; align-items: center; justify-content: space-between;
@@ -427,8 +412,7 @@ onMounted(() => { void loadData() })
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .form-col { display: flex; flex-direction: column; gap: 0; }
