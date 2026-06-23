@@ -58,6 +58,7 @@
             </template>
           </q-input>
         </div>
+        </q-form>
       </q-card-section>
     </q-card>
   </q-page>

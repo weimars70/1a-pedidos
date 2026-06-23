@@ -10,17 +10,25 @@ export class CreateContratoDto {
   @IsNotEmpty({ message: 'El cliente es requerido' })
   id_cliente: number;
 
-  @IsOptional()
   @IsNumber()
-  personas?: number;
+  @IsNotEmpty({ message: 'El supervisor/coordinador es requerido' })
+  id_supervisor: number;
 
-  @IsOptional()
-  @IsDateString()
-  fecha_inicio?: string;
+  @IsNumber()
+  @IsNotEmpty({ message: 'La causal es requerida' })
+  id_causa: number;
 
-  @IsOptional()
+  @IsNumber()
+  @IsNotEmpty({ message: 'El número de personas es requerido' })
+  personas: number;
+
   @IsDateString()
-  fecha_terminacion?: string;
+  @IsNotEmpty({ message: 'La fecha de inicio es requerida' })
+  fecha_inicio: string;
+
+  @IsDateString()
+  @IsNotEmpty({ message: 'La fecha de terminación es requerida' })
+  fecha_terminacion: string;
 
   @IsOptional()
   @IsNumber()

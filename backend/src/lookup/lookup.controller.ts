@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LookupService } from './lookup.service';
 
@@ -27,4 +27,12 @@ export class LookupController {
 
   @Get('tipo-equipo')
   getTipoEquipo() { return this.svc.getTipoEquipo(); }
+
+  @Get('causales')
+  getCausales() { return this.svc.getCausales(); }
+
+  @Get('empleado/:codigo')
+  getEmpleado(@Param('codigo', ParseIntPipe) codigo: number) {
+    return this.svc.getEmpleado(codigo);
+  }
 }

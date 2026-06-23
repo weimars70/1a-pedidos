@@ -28,7 +28,6 @@
           <q-input v-model="filterFechaDesde" type="date" label="Fecha desde" outlined dense stack-label style="min-width:155px" />
           <q-input v-model="filterFechaHasta" type="date" label="Fecha hasta" outlined dense stack-label style="min-width:155px" />
           <q-btn flat dense round icon="refresh" :loading="loading" @click="loadData"><q-tooltip>Actualizar</q-tooltip></q-btn>
-          <q-btn unelevated no-caps icon="add" label="+ Contrato" color="primary" class="new-btn" @click="openForm(null)" />
         </div>
         <div v-if="filterTipo || filterPerfil || filterFechaDesde || filterFechaHasta" class="row q-gutter-xs items-center">
           <span class="text-caption text-grey-6">Filtros activos:</span>
@@ -58,8 +57,8 @@
             <q-btn flat round dense icon="edit" color="primary" size="sm" @click="openForm(props.row)">
               <q-tooltip>Editar</q-tooltip>
             </q-btn>
-            <q-btn flat round dense icon="delete_outline" color="negative" size="sm" @click="confirmDelete(props.row)">
-              <q-tooltip>Eliminar</q-tooltip>
+            <q-btn flat round dense icon="block" color="negative" size="sm" @click="confirmAnular(props.row)">
+              <q-tooltip>Anular</q-tooltip>
             </q-btn>
           </q-td>
         </template>
@@ -163,16 +162,16 @@
       </q-card>
     </q-dialog>
 
-    <!-- Delete confirm -->
-    <q-dialog v-model="showDelete">
+    <!-- Anular confirm -->
+    <q-dialog v-model="showAnular">
       <q-card style="min-width:340px">
         <q-card-section class="row items-center q-pa-lg">
-          <q-avatar icon="warning" color="negative" text-color="white" />
-          <span class="q-ml-sm">¿Eliminar contrato de <strong>{{ deletingRow?.nombre_cliente }}</strong>?</span>
+          <q-avatar icon="block" color="negative" text-color="white" />
+          <span class="q-ml-sm">¿Anular contrato de <strong>{{ anulandoRow?.nombre_cliente }}</strong>? Se inactivará pero no se borrará de la base de datos.</span>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat no-caps label="Cancelar" v-close-popup />
-          <q-btn unelevated no-caps label="Eliminar" color="negative" :loading="deleting" @click="doDelete" />
+          <q-btn unelevated no-caps label="Anular" color="negative" :loading="anulando" @click="doAnular" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -198,6 +197,8 @@ interface ContratoRow {
   personas: number | null
   nombre_supervisor: string | null
   id_cliente: number
+  usuario_crea: string | null
+  usuario_anula: string | null
   causal: string | null
   observacion: string | null
 }
@@ -261,6 +262,8 @@ const columns = [
   { name: 'nombre_cliente',    label: 'Nombre Cliente',     field: 'nombre_cliente',    align: 'left' as const,   sortable: true },
   { name: 'personas',          label: 'Personas',           field: 'personas',          align: 'left' as const,   sortable: true },
   { name: 'nombre_supervisor', label: 'Coordinador',        field: 'nombre_supervisor', align: 'left' as const,   sortable: true },
+  { name: 'usuario_crea',      label: 'Usuario Crea',       field: 'usuario_crea',      align: 'left' as const,   sortable: true },
+  { name: 'usuario_anula',     label: 'Usuario Anula',      field: 'usuario_anula',     align: 'left' as const,   sortable: true },
   { name: 'causal',           label: 'Causa',              field: 'causal',            align: 'left' as const,   sortable: true },
   { name: 'observacion',      label: 'Observación',        field: 'observacion',       align: 'left' as const,   sortable: true },
 ]
@@ -291,15 +294,22 @@ const form = reactive({
   observacion: '',
 })
 
+// La BD devuelve las fechas como timestamp ISO (ej. "2026-06-20T05:00:00.000Z");
+// el <input type="date"> requiere "YYYY-MM-DD". Tomamos los primeros 10 caracteres
+// para evitar desfases por zona horaria.
+function toDateInput(v: string | null): string {
+  return v ? String(v).slice(0, 10) : ''
+}
+
 function openForm(row: ContratoRow | null) {
   editingRow.value = row
   if (row) {
     Object.assign(form, {
-      fecha: row.fecha ?? '',
+      fecha: toDateInput(row.fecha),
       id_cliente: row.id_cliente ?? null,
       personas: row.personas ?? null,
-      fecha_inicio: row.fecha_inicio ?? '',
-      fecha_terminacion: row.fecha_terminacion ?? '',
+      fecha_inicio: toDateInput(row.fecha_inicio),
+      fecha_terminacion: toDateInput(row.fecha_terminacion),
       tipo: row.tipo === 'Terminacion' ? 1 : row.tipo === 'Disminución' ? 2 : null,
       perfil: null,
       observacion: row.observacion ?? '',
@@ -349,23 +359,23 @@ async function saveForm() {
   } finally { saving.value = false }
 }
 
-// ── Delete ──
-const showDelete  = ref(false)
-const deletingRow = ref<ContratoRow | null>(null)
-const deleting    = ref(false)
+// ── Anular (soft-delete) ──
+const showAnular  = ref(false)
+const anulandoRow = ref<ContratoRow | null>(null)
+const anulando    = ref(false)
 
-function confirmDelete(row: ContratoRow) { deletingRow.value = row; showDelete.value = true }
+function confirmAnular(row: ContratoRow) { anulandoRow.value = row; showAnular.value = true }
 
-async function doDelete() {
-  if (!deletingRow.value) return
-  deleting.value = true
+async function doAnular() {
+  if (!anulandoRow.value) return
+  anulando.value = true
   try {
-    await api.delete(`/contratos/${deletingRow.value.id}`)
-    $q.notify({ type: 'positive', message: 'Contrato eliminado' })
-    showDelete.value = false
+    await api.patch(`/contratos/${anulandoRow.value.id}/anular`)
+    $q.notify({ type: 'positive', message: 'Contrato anulado' })
+    showAnular.value = false
     await loadData()
-  } catch { $q.notify({ type: 'negative', message: 'Error al eliminar' }) }
-  finally { deleting.value = false }
+  } catch { $q.notify({ type: 'negative', message: 'Error al anular' }) }
+  finally { anulando.value = false }
 }
 
 onMounted(() => { void loadData() })
@@ -385,7 +395,6 @@ onMounted(() => { void loadData() })
   gap: 12px; padding: 12px 16px !important;
 }
 .search-input { width: 280px; }
-.new-btn { font-weight: 600; letter-spacing: 0.5px; }
 
 .tipo-badge { font-size: 11px; font-weight: 600; }
 

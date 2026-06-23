@@ -47,4 +47,18 @@ export class LookupService {
       `SELECT id, nombre FROM tipo_equipo ORDER BY nombre`,
     );
   }
+
+  async getEmpleado(codigo: number) {
+    const [row] = await this.dataSource.query(
+      `SELECT codigo, nombre, ident FROM empleados WHERE codigo = $1 LIMIT 1`,
+      [codigo],
+    );
+    return row ?? null;
+  }
+
+  getCausales() {
+    return this.dataSource.query(
+      `SELECT id, nombre FROM causal_terminacion_contrato ORDER BY nombre`,
+    );
+  }
 }

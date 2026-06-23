@@ -239,7 +239,8 @@ const asociacionesMenu = [
 const isInAsociaciones = computed(() => route.path.startsWith('/app/asociaciones'))
 
 const contratosMenu = [
-  { label: 'Registrar Terminación Contrato', to: '/app/contratos', icon: 'description' },
+  { label: 'Nuevo registro de Terminación Contrato', to: '/app/contratos/registrar-terminacion', icon: 'assignment_late' },
+  { label: 'Nuevo registro de Disminución Contrato', to: '/app/contratos/registrar-disminucion', icon: 'trending_down' },
   { label: 'Contratos Terminados', to: '/app/contratos/terminados', icon: 'assignment_turned_in' },
 ]
 

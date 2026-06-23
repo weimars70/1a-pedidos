@@ -1,10 +1,14 @@
 import {
-  Body, Controller, Delete, Get, Param, ParseIntPipe,
-  Post, Put, UseGuards,
+  Body, Controller, Delete, Get, Param, ParseIntPipe, Patch,
+  Post, Put, Req, UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ContratosService } from './contratos.service';
 import { CreateContratoDto, UpdateContratoDto } from './contratos.dto';
+
+interface AuthRequest {
+  user?: { id?: string; usuario?: string; empresaId?: number };
+}
 
 @Controller('contratos')
 @UseGuards(JwtAuthGuard)
@@ -22,8 +26,8 @@ export class ContratosController {
   }
 
   @Post()
-  create(@Body() body: CreateContratoDto) {
-    return this.svc.create(body);
+  create(@Body() body: CreateContratoDto, @Req() req: AuthRequest) {
+    return this.svc.create(body, req.user?.usuario);
   }
 
   @Put(':id')
@@ -32,6 +36,11 @@ export class ContratosController {
     @Body() body: UpdateContratoDto,
   ) {
     return this.svc.update(id, body);
+  }
+
+  @Patch(':id/anular')
+  anular(@Param('id', ParseIntPipe) id: number, @Req() req: AuthRequest) {
+    return this.svc.anular(id, req.user?.usuario);
   }
 
   @Delete(':id')
