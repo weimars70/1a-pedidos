@@ -11,6 +11,14 @@
           <q-btn flat dense round icon="refresh" :loading="loading" @click="loadData">
             <q-tooltip>Actualizar</q-tooltip>
           </q-btn>
+          <q-btn flat no-caps icon="file_download" label="Exportar Clientes" color="teal-8"
+            @click="exportClientes">
+            <q-tooltip>Exportar clientes a Excel/CSV</q-tooltip>
+          </q-btn>
+          <q-btn flat no-caps icon="contacts" label="Exportar Contactos" color="blue-8"
+            @click="exportContactos">
+            <q-tooltip>Exportar contactos de clientes a Excel/CSV</q-tooltip>
+          </q-btn>
           <q-btn unelevated no-caps icon="add" label="Nuevo cliente" color="primary"
             class="new-btn" @click="openForm(null)" />
         </div>
@@ -219,12 +227,13 @@ import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 
 interface ClienteRow {
-  id: number; ident: string; nombre: string; ciudad_codigo: string; ciudad_nombre: string
+  id: number; codigo: number; ident: string; nombre: string; ciudad_codigo: string; ciudad_nombre: string
   direccion: string; telefono: string; correo: string; contacto: string
   centro_costos: string; tope_credito: number | null
   cod_supervisor: number | null; supervisor_nombre: string
   codigo_sector: number | null; sector_nombre: string
   observaciones: string; activo: boolean
+  fecha_inicio_servicio: string | null
 }
 interface Contacto {
   id?: number; _tempId?: number; id_cliente?: number; cargo?: number | null
@@ -249,17 +258,20 @@ const filtered = computed(() => {
 })
 
 const columns = [
-  { name: 'actions',           label: '',               field: 'actions',           align: 'center' as const, sortable: false },
-  { name: 'id',                label: 'Id',             field: 'id',                align: 'left' as const,   sortable: true  },
-  { name: 'codigo',            label: 'Codigo',         field: 'codigo',            align: 'left' as const,   sortable: true  },
-  { name: 'ident',             label: 'Identificacion', field: 'ident',             align: 'left' as const,   sortable: true  },
-  { name: 'nombre',            label: 'Nombre',         field: 'nombre',            align: 'left' as const,   sortable: true  },
-  { name: 'telefono',          label: 'Telefono',       field: 'telefono',          align: 'left' as const,   sortable: false },
-  { name: 'correo',            label: 'Correo',         field: 'correo',            align: 'left' as const,   sortable: false },
-  { name: 'supervisor_nombre', label: 'Sup Nombre',     field: 'supervisor_nombre', align: 'left' as const,   sortable: false },
-  { name: 'contacto',          label: 'Contacto',       field: 'contacto',          align: 'left' as const,   sortable: false },
-  { name: 'centro_costos',     label: 'Centro Costos',  field: 'centro_costos',     align: 'left' as const,   sortable: false },
-  { name: 'direccion',         label: 'Direccion',      field: 'direccion',         align: 'left' as const,   sortable: false },
+  { name: 'actions',                 label: '',                      field: 'actions',                 align: 'center' as const, sortable: false },
+  { name: 'id',                      label: 'Id',                    field: 'id',                      align: 'left' as const,   sortable: true  },
+  { name: 'codigo',                  label: 'Codigo',                field: 'codigo',                  align: 'left' as const,   sortable: true  },
+  { name: 'ident',                   label: 'Identificacion',        field: 'ident',                   align: 'left' as const,   sortable: true  },
+  { name: 'nombre',                  label: 'Nombre',                field: 'nombre',                  align: 'left' as const,   sortable: true  },
+  { name: 'telefono',                label: 'Telefono',              field: 'telefono',                align: 'left' as const,   sortable: false },
+  { name: 'correo',                  label: 'Correo',                field: 'correo',                  align: 'left' as const,   sortable: false },
+  { name: 'supervisor_nombre',       label: 'Supervisor',            field: 'supervisor_nombre',       align: 'left' as const,   sortable: false },
+  { name: 'sector_nombre',           label: 'Sector',                field: 'sector_nombre',           align: 'left' as const,   sortable: true  },
+  { name: 'contacto',                label: 'Contacto',              field: 'contacto',                align: 'left' as const,   sortable: false },
+  { name: 'centro_costos',           label: 'Centro Costos',         field: 'centro_costos',           align: 'left' as const,   sortable: false },
+  { name: 'fecha_inicio_servicio',   label: 'Fecha Inicio Servicio', field: 'fecha_inicio_servicio',   align: 'left' as const,   sortable: true,
+    format: (v: string | null) => v ? String(v).slice(0, 10) : '' },
+  { name: 'direccion',               label: 'Direccion',             field: 'direccion',               align: 'left' as const,   sortable: false },
 ]
 
 function onSearch() { /* computed handles */ }
@@ -401,13 +413,30 @@ async function removeContact(ct: Contacto) {
   }
 }
 
+function buildClientePayload() {
+  // Solo campos que acepta UpdateClienteDto (PartialType de CreateClienteDto)
+  // Strip: id, codigo, y todos los campos computados del view
+  const {
+    id: _id, codigo: _codigo,
+    ciudad_nombre: _cn, supervisor_nombre: _sn, sector_nombre: _secto,
+    fecha_inicio_servicio: _fi,
+    ...rest
+  } = form as Record<string, unknown>
+  void _id; void _codigo; void _cn; void _sn; void _secto; void _fi
+  // tope_credito llega como string desde el input — convertir a número
+  if (rest.tope_credito !== undefined && rest.tope_credito !== null) rest.tope_credito = Number(rest.tope_credito)
+  // codigo_sector tiene NOT NULL en BD — usar 0 cuando no se selecciona
+  if (rest.codigo_sector === null || rest.codigo_sector === undefined) rest.codigo_sector = 0
+  return rest
+}
+
 async function saveForm() {
   if (!form.nombre) { $q.notify({ type: 'warning', message: 'El nombre es requerido' }); return }
   saving.value = true
   try {
     let clienteId: number
     if (editingRow.value) {
-      await api.put(`/maestros/clientes/${editingRow.value.id}`, { ...form })
+      await api.put(`/maestros/clientes/${editingRow.value.id}`, buildClientePayload())
       clienteId = editingRow.value.id
       $q.notify({ type: 'positive', message: 'Cliente actualizado', icon: 'check_circle' })
     } else {
@@ -449,6 +478,82 @@ async function doDelete() {
     await loadData()
   } catch { $q.notify({ type: 'negative', message: 'Error al inactivar' }) }
   finally { deleting.value = false }
+}
+
+// ── Exports ──
+function downloadCSV(filename: string, rows2: Record<string, unknown>[], headers: { key: string; label: string }[]) {
+  const headerRow = headers.map(h => `"${h.label}"`).join(',')
+  const dataRows = rows2.map(r =>
+    headers.map(h => {
+      const val = r[h.key] ?? ''
+      return `"${String(val).replace(/"/g, '""')}"`
+    }).join(',')
+  )
+  const csv = [headerRow, ...dataRows].join('\n')
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
+  URL.revokeObjectURL(url)
+}
+
+function exportClientes() {
+  const headers = [
+    { key: 'id', label: 'Id' },
+    { key: 'codigo', label: 'Codigo' },
+    { key: 'ident', label: 'Identificacion' },
+    { key: 'nombre', label: 'Nombre' },
+    { key: 'ciudad_nombre', label: 'Ciudad' },
+    { key: 'direccion', label: 'Direccion' },
+    { key: 'telefono', label: 'Telefono' },
+    { key: 'correo', label: 'Correo' },
+    { key: 'contacto', label: 'Contacto' },
+    { key: 'centro_costos', label: 'Centro Costos' },
+    { key: 'tope_credito', label: 'Tope Credito' },
+    { key: 'supervisor_nombre', label: 'Supervisor' },
+    { key: 'sector_nombre', label: 'Sector' },
+    { key: 'observaciones', label: 'Observaciones' },
+    { key: 'activo', label: 'Activo' },
+    { key: 'fecha_inicio_servicio', label: 'Fecha Inicio Servicio' },
+  ]
+  downloadCSV('clientes.csv', filtered.value as unknown as Record<string, unknown>[], headers)
+  $q.notify({ type: 'positive', message: `${filtered.value.length} clientes exportados` })
+}
+
+async function exportContactos() {
+  $q.notify({ type: 'info', message: 'Exportando contactos...' })
+  const headers = [
+    { key: 'nombre_cliente', label: 'Cliente' },
+    { key: 'nit', label: 'NIT' },
+    { key: 'nombre', label: 'Nombre Contacto' },
+    { key: 'cargo_nombre', label: 'Cargo' },
+    { key: 'telefono', label: 'Telefono' },
+    { key: 'correo', label: 'Correo' },
+    { key: 'direccion', label: 'Direccion' },
+    { key: 'comentario', label: 'Comentario' },
+  ]
+  const allContacts: Record<string, unknown>[] = []
+  for (const cli of filtered.value) {
+    try {
+      const { data } = await api.get(`/maestros/clientes/${cli.id}/contactos`)
+      for (const ct of data) {
+        allContacts.push({
+          nombre_cliente: cli.nombre,
+          nit: cli.ident,
+          nombre: ct.nombre,
+          cargo_nombre: ct.cargo_nombre,
+          telefono: ct.telefono,
+          correo: ct.correo,
+          direccion: ct.direccion,
+          comentario: ct.comentario,
+        })
+      }
+    } catch { /* skip client with no contacts */ }
+  }
+  if (!allContacts.length) {
+    $q.notify({ type: 'warning', message: 'No hay contactos para exportar' }); return
+  }
+  downloadCSV('contactos_clientes.csv', allContacts, headers)
+  $q.notify({ type: 'positive', message: `${allContacts.length} contactos exportados` })
 }
 
 onMounted(() => { void Promise.all([loadData(), loadOptions()]) })

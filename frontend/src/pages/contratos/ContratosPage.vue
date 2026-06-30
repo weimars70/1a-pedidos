@@ -19,6 +19,12 @@
           <q-input v-model="filterFechaDesde" type="date" label="Fecha desde" outlined dense stack-label style="min-width:155px" />
           <q-input v-model="filterFechaHasta" type="date" label="Fecha hasta" outlined dense stack-label style="min-width:155px" />
           <q-btn flat dense round icon="refresh" :loading="loading" @click="loadData"><q-tooltip>Actualizar</q-tooltip></q-btn>
+          <q-toggle v-model="verAnulados" label="Ver Anulados" color="negative"
+            @update:model-value="loadData" />
+          <q-btn flat no-caps icon="file_download" label="Exportar" color="teal-8"
+            @click="exportContratos">
+            <q-tooltip>Exportar contratos visibles a CSV</q-tooltip>
+          </q-btn>
           <q-space />
           <q-btn unelevated no-caps icon="assignment_late" label="Nueva Terminación" color="red-7"
             class="q-ml-sm" @click="openTerminacion" />
@@ -319,6 +325,7 @@ interface ContratoRow {
   usuario_anula: string | null
   causal: string | null
   observacion: string | null
+  anulado: boolean | null
 }
 
 const $q = useQuasar()
@@ -331,6 +338,7 @@ const filterTipo   = ref<string | null>(null)
 const filterPerfil = ref<string | null>(null)
 const filterFechaDesde = ref('')
 const filterFechaHasta = ref('')
+const verAnulados = ref(false)
 
 const tipoFilterOpts = [
   { label: 'Terminacion', value: 'Terminacion' },
@@ -389,11 +397,48 @@ const columns = [
 async function loadData() {
   loading.value = true
   try {
-    const { data } = await api.get('/contratos')
+    const params = verAnulados.value ? '?anulados=true' : ''
+    const { data } = await api.get(`/contratos${params}`)
     rows.value = data
   } catch {
     $q.notify({ type: 'negative', message: 'Error al cargar contratos' })
   } finally { loading.value = false }
+}
+
+function downloadCSV(filename: string, dataRows: ContratoRow[], headers: { key: keyof ContratoRow; label: string }[]) {
+  const headerRow = headers.map(h => `"${h.label}"`).join(',')
+  const csvRows = dataRows.map(r =>
+    headers.map(h => {
+      const val = r[h.key] ?? ''
+      return `"${String(val).replace(/"/g, '""')}"`
+    }).join(',')
+  )
+  const csv = [headerRow, ...csvRows].join('\n')
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
+  URL.revokeObjectURL(url)
+}
+
+function exportContratos() {
+  const headers: { key: keyof ContratoRow; label: string }[] = [
+    { key: 'id', label: 'Id' },
+    { key: 'tipo', label: 'Tipo' },
+    { key: 'n_perfil', label: 'N Perfil' },
+    { key: 'fecha', label: 'Fecha' },
+    { key: 'fecha_inicio', label: 'Fecha Inicio' },
+    { key: 'fecha_terminacion', label: 'Fecha Terminacion' },
+    { key: 'nit', label: 'NIT' },
+    { key: 'nombre_cliente', label: 'Cliente' },
+    { key: 'personas', label: 'Personas' },
+    { key: 'nombre_supervisor', label: 'Coordinador' },
+    { key: 'causal', label: 'Causal' },
+    { key: 'observacion', label: 'Observacion' },
+    { key: 'usuario_crea', label: 'Usuario Crea' },
+    { key: 'usuario_anula', label: 'Usuario Anula' },
+  ]
+  downloadCSV(verAnulados.value ? 'contratos_anulados.csv' : 'contratos.csv', filtered.value, headers)
+  $q.notify({ type: 'positive', message: `${filtered.value.length} contratos exportados` })
 }
 
 // ── Form ──

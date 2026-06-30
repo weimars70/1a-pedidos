@@ -11,11 +11,12 @@ const SELECT_CLIENTE = `
     c.centro_costos, c.tope_credito,
     c.cod_supervisor, e.nombre AS supervisor_nombre,
     c.codigo_sector, s.nombre AS sector_nombre,
-    c.observaciones, c.activo
+    c.observaciones, c.activo,
+    c.fecha AS fecha_inicio_servicio
   FROM clientes c
   LEFT JOIN ciudades ci ON ci.codigo = c.ciudad_codigo
   LEFT JOIN empleados e ON e.codigo = c.cod_supervisor
-  LEFT JOIN sectores s ON s.codigo = c.codigo_sector
+  LEFT JOIN sectores s ON s.codigo = c.codigo_sector AND c.codigo_sector > 0
 `;
 
 @Injectable()
@@ -26,11 +27,15 @@ export class ClientesService {
   ) {}
 
   findAll() {
-    return this.db.query(`${SELECT_CLIENTE} WHERE c.activo IS DISTINCT FROM false ORDER BY c.nombre`);
+    const q = `${SELECT_CLIENTE} WHERE c.activo IS DISTINCT FROM false ORDER BY c.nombre`;
+    console.log('[ClientesService.findAll] SQL:', q);
+    return this.db.query(q);
   }
 
   async findOne(id: number) {
-    const rows = await this.db.query(`${SELECT_CLIENTE} WHERE c.codigo = $1`, [id]);
+    const q = `${SELECT_CLIENTE} WHERE c.codigo = $1`;
+    console.log(`[ClientesService.findOne] SQL: ${q} | id=${id}`);
+    const rows = await this.db.query(q, [id]);
     if (!rows[0]) throw new NotFoundException(`Cliente ${id} no encontrado`);
     return rows[0];
   }

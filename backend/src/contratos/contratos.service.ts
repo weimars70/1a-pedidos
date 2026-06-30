@@ -17,11 +17,12 @@ export class ContratosService {
     return row?.id ?? null;
   }
 
-  async findAll() {
+  async findAll(anulados = false) {
+    const whereClause = anulados
+      ? `WHERE COALESCE(anulado, false) = true`
+      : `WHERE COALESCE(anulado, false) = false`;
     return this.dataSource.query(
-      `SELECT * FROM terminacion_contrato_view
-       WHERE COALESCE(anulado, false) = false
-       ORDER BY id DESC LIMIT 500`,
+      `SELECT * FROM terminacion_contrato_view ${whereClause} ORDER BY id DESC LIMIT 500`,
     );
   }
 

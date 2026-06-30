@@ -1,6 +1,6 @@
 import {
   Body, Controller, Delete, Get, Param, ParseIntPipe, Patch,
-  Post, Put, Req, UseGuards,
+  Post, Put, Query, Req, UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ContratosService } from './contratos.service';
@@ -16,8 +16,8 @@ export class ContratosController {
   constructor(private readonly svc: ContratosService) {}
 
   @Get()
-  findAll() {
-    return this.svc.findAll();
+  findAll(@Query('anulados') anulados?: string) {
+    return this.svc.findAll(anulados === 'true');
   }
 
   @Get('terminados')

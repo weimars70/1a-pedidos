@@ -1,6 +1,6 @@
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -29,7 +29,7 @@ export class CreateClienteDto {
   telefono?: string;
 
   @IsOptional()
-  @IsEmail({}, { message: 'El correo no es válido' })
+  @IsString()
   correo?: string;
 
   @IsOptional()
@@ -41,14 +41,17 @@ export class CreateClienteDto {
   centro_costos?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   tope_credito?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   cod_supervisor?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   codigo_sector?: number;
 
