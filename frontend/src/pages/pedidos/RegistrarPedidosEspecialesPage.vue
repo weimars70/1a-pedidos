@@ -8,6 +8,7 @@
           <q-icon name="star_rate" color="white" size="28px" />
           <div>
             <div class="text-h6 text-white text-weight-bold q-ma-none">Registrar Pedido Especial</div>
+          </div>
         </div>
       </div>
     </div>

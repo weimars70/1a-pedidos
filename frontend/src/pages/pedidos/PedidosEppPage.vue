@@ -1,8 +1,7 @@
 ﻿<template>
   <q-page class="pedidos-epp-page q-pa-lg">
-    </div>
 
-    <!-- Toolbar -->
+<!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section class="toolbar-row">
         <q-input v-model="search" dense outlined clearable placeholder="Búsqueda rápida..."

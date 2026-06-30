@@ -5,6 +5,7 @@
         <q-icon name="admin_panel_settings" color="primary" size="28px" class="q-mr-sm" />
         <h5 class="q-ma-none text-weight-bold text-grey-9">Grupos Aplicaciones</h5>
       </div>
+    </div>
     <!-- Group selector -->
     <q-card flat bordered class="q-mb-lg">
       <q-card-section>

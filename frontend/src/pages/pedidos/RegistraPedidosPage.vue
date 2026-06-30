@@ -8,6 +8,7 @@
           <q-icon name="assignment_add" color="white" size="28px" />
           <div>
             <div class="text-h6 text-white text-weight-bold q-ma-none">Registrar Pedido</div>
+          </div>
         </div>
       </div>
     </div>

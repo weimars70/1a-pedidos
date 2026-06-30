@@ -1,5 +1,5 @@
 # Script Maestro para Generar Paquete de Producción - UNO-A Pedidos
-# Puerto objetivo en el servidor: 3033
+# Puerto objetivo en el servidor: 3032
 Write-Host "--- Iniciando Proceso de Construcción Completo (unoa-pedidos) ---" -ForegroundColor Cyan
 
 $deployDir = "DEPLOY_PACKAGE"
@@ -28,8 +28,13 @@ Write-Host "`n[2/3] Preparando archivos estaticos en Backend..." -ForegroundColo
 if (Test-Path "backend/client") { Remove-Item -Recurse -Force "backend/client" }
 New-Item -ItemType Directory -Path "backend/client" | Out-Null
 
-# Copiar el build del frontend al backend
-Copy-Item -Path "frontend/dist/*" -Destination "backend/client" -Recurse
+# Copiar el build del frontend al backend (Quasar genera en dist/spa)
+$spaDist = "frontend/dist/spa"
+if (-not (Test-Path "$spaDist/index.html")) {
+    Write-Host "ERROR: No se encontro $spaDist/index.html. Verifica el build de Quasar." -ForegroundColor Red
+    exit 1
+}
+Copy-Item -Path "$spaDist/*" -Destination "backend/client" -Recurse
 
 # 4. Construir Backend
 Write-Host "`n[3/3] Construyendo Backend..." -ForegroundColor Yellow
@@ -52,7 +57,10 @@ Copy-Item -Path "backend/package-lock.json" -Destination "$deployDir/"
 # Copiar .env (¡IMPORTANTE: editar las variables en el VPS antes de iniciar!)
 if (Test-Path "backend/.env") { 
     Copy-Item -Path "backend/.env" -Destination "$deployDir/" 
-    Write-Host "  ⚠  .env incluido - recuerda ajustar PORT=3033 y credenciales en el VPS" -ForegroundColor Yellow
+    (Get-Content "$deployDir/.env") -replace 'PORT=\d+', 'PORT=3032' | Set-Content "$deployDir/.env"
+    Write-Host "  ⚠  .env incluido - recuerda ajustar PORT=3032 y credenciales en el VPS" -ForegroundColor Yellow
+} else {
+    Set-Content -Path "$deployDir/.env" -Value "PORT=3032"
 }
 
 Write-Host "`n====================================================" -ForegroundColor Cyan
@@ -62,7 +70,7 @@ Write-Host "====================================================" -ForegroundCol
 Write-Host "INSTRUCCIONES PARA EL VPS:" -ForegroundColor Yellow
 Write-Host "1. Sube TODO el contenido de '$deployDir' al VPS."
 Write-Host "2. En el servidor ejecuta:  npm install --production"
-Write-Host "3. Asegurate que el .env tenga PORT=3033"
+Write-Host "3. Asegurate que el .env tenga PORT=3032"
 Write-Host "4. Inicia la app con PM2:   pm2 start dist/main.js --name unoa-pedidos"
 Write-Host "5. Guarda la config PM2:    pm2 save"
-Write-Host "6. Recuerda configurar el proxy inverso (nginx) para el puerto 3033."
+Write-Host "6. Recuerda configurar el proxy inverso (nginx) para el puerto 3032."

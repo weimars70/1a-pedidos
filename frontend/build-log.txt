@@ -1,0 +1,153 @@
+
+> unoa2-frontend@0.1.0 build
+> quasar build
+
+
+ .d88888b.
+d88P" "Y88b
+888     888
+888     888 888  888  8888b.  .d8888b   8888b.  888d888
+888     888 888  888     "88b 88K          "88b 888P"
+888 Y8b 888 888  888 .d888888 "Y8888b. .d888888 888
+Y88b.Y8b88P Y88b 888 888  888      X88 888  888 888
+ "Y888888"   "Y88888 "Y888888  88888P' "Y888888 888
+       Y8b
+
+
+ Build mode............. spa
+ Pkg quasar............. v2.19.3
+ Pkg @quasar/app-vite... v1.11.0
+ Pkg vite............... v2.9.18
+ Debugging.............. no
+ Publishing............. no
+
+ App •  WAIT  • Compiling of SPA UI with Vite in progress...
+[31m[vite:vue] Invalid end tag.[39m
+file: [36mC:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/pages/pedidos/PedidosPersonalProgramadosPage.vue:3:5[39m
+Error [SyntaxError]: Invalid end tag.
+    at createCompilerError (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:1374:17)
+    at emitError (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:2980:5)
+    at Object.onclosetag (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:2387:9)
+    at Tokenizer.stateInClosingTagName (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:799:16)
+    at Tokenizer.parse (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:1157:16)
+    at Object.baseParse (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:3012:13)
+    at Object.parse (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.prod.js:665:23)
+    at Object.parse$1 [as parse] (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+    at createDescriptor (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vitejs\plugin-vue\dist\index.js:4005:43)
+    at transformMain (C:\Users\Weimar\Documents\proyectos\unoa-pedidos\frontend\node_modules\@vitejs\plugin-vue\dist\index.js:4350:34) {
+  id: 'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/pages/pedidos/PedidosPersonalProgramadosPage.vue',
+  plugin: 'vite:vue',
+  loc: {
+    file: 'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/pages/pedidos/PedidosPersonalProgramadosPage.vue',
+    line: 3,
+    column: 5
+  },
+  hook: 'transform',
+  code: 'PLUGIN_ERROR',
+  watchFiles: [
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/index.html',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/.quasar/client-entry.js',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\vite\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\vue\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\@quasar\\extras\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\quasar\\package.json',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/vue/dist/vue.runtime.esm-bundler.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@quasar/extras/roboto-font/roboto-font.css',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@quasar/extras/material-icons/material-icons.css',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/dist/quasar.sass',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/.quasar/app.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/.quasar/quasar-user-options.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/css/app.scss',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/boot/axios.ts',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/boot/pinia.ts',
+    'vite/preload-helper',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\@vue\\runtime-dom\\package.json',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/lang/es.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/notify/Notify.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/loading/Loading.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/dialog/Dialog.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/vue-plugin.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/App.vue',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/src/router/index.ts',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\@vue\\runtime-core\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\@vue\\shared\\package.json',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@vue/shared/dist/shared.esm-bundler.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/dialog/component/DialogPluginComponent.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.dialog/create-dialog.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/spinner/QSpinner.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/install-quasar.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.create/create.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.config/nodes.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/scroll/prevent-scroll.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/is/is.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/avatar/QAvatar.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/icon/QIcon.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/btn/QBtn.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/event/event.js',
+    'plugin-vue:export-helper',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/lang/Lang.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/icon-set/IconSet.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/dialog/QDialog.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/card/QCard.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/card/QCardSection.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/card/QCardActions.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/separator/QSeparator.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/input/QInput.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/option-group/QOptionGroup.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-dark/use-dark.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.keyboard/key-composition.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/platform/Platform.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/screen/Screen.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/dark/Dark.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/private.body/Body.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/plugins/private.history/History.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.symbols/symbols.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.config/instance-config.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.inject-obj-prop/inject-obj-prop.js',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\@vue\\reactivity\\package.json',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/spinner/use-spinner.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/scroll/scroll.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-size/use-size.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.render/render.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/directives/ripple/Ripple.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/btn/use-btn.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/icon-set/material-icons.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/lang/en-US.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-align/use-align.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-history/use-history.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/use-timeout/use-timeout.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/use-tick/use-tick.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-model-toggle/use-model-toggle.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-transition/use-transition.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-portal/use-portal.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-prevent-scroll/use-prevent-scroll.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/dom/dom.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.keyboard/escape-key.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.focus/focusout.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/private.focus/focus-manager.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-field/use-field.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/input/use-mask.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/use-form/private.use-form.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-file/use-file-dom-props.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/composables/private.use-key-composition/use-key-composition.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/radio/QRadio.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/checkbox/QCheckbox.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/components/toggle/QToggle.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/debounce/debounce.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/src/utils/css-var/set-css-var.js',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\axios\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\pinia\\package.json',
+    'C:\\Users\\Weimar\\Documents\\proyectos\\unoa-pedidos\\frontend\\node_modules\\vue-router\\package.json',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/quasar/wrappers/index.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/axios/index.js',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/pinia/dist/pinia.mjs',
+    'C:/Users/Weimar/Documents/proyectos/unoa-pedidos/frontend/node_modules/vue-router/dist/vue-router.mjs',
+    ... 142 more items
+  ]
+}
+
+ App • ⚠️   FAIL  App build failed (check the log above)
+

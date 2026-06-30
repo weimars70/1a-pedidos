@@ -1,8 +1,7 @@
 ﻿<template>
   <q-page class="pedidos-epp-dotacion-procesado-page q-pa-lg">
-    </div>
 
-    <!-- Toolbar -->
+<!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section class="toolbar-section">
 

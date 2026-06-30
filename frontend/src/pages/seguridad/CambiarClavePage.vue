@@ -5,6 +5,7 @@
         <q-icon name="lock" color="primary" size="28px" class="q-mr-sm" />
         <h5 class="q-ma-none text-weight-bold text-grey-9">Cambiar Contraseña</h5>
       </div>
+    </div>
     <q-card flat bordered style="max-width: 440px; margin: 40px auto">
       <q-card-section class="q-pa-lg">
         <q-form @submit.prevent="cambiarClave">

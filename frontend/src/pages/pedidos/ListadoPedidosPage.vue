@@ -1,6 +1,5 @@
-﻿<template>
+<template>
   <q-page class="listado-pedidos-page q-pa-lg">
-    </div>
 
     <!-- Toolbar -->
     <q-card flat bordered class="q-mb-md">

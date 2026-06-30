@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <q-page class="pc-page q-pa-lg">
     <!-- Teal gradient header -->
     <div class="page-header q-mb-lg">
@@ -6,6 +6,7 @@
         <q-icon name="school" size="28px" class="q-mr-sm" style="color:#fff" />
         <span class="text-h5 text-white text-weight-bold">Listado Perfil Capacitación</span>
       </div>
+    </div>
     <!-- Toolbar: filter + search -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section class="q-pa-md">

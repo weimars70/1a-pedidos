@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <q-page class="supernumerarios-page q-pa-lg">
     <!-- Page header -->
     <div class="page-header q-mb-lg">
@@ -6,6 +6,7 @@
         <q-icon name="people_alt" color="primary" size="28px" class="q-mr-sm" />
         <h5 class="q-ma-none text-weight-bold text-grey-9">Supernumerarios</h5>
       </div>
+    </div>
     <!-- Form card -->
     <q-card flat bordered class="q-mb-md shadow-2">
       <q-card-section class="form-section">
