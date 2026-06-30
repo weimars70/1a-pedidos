@@ -437,7 +437,8 @@ function exportContratos() {
     { key: 'usuario_crea', label: 'Usuario Crea' },
     { key: 'usuario_anula', label: 'Usuario Anula' },
   ]
-  downloadCSV(verAnulados.value ? 'contratos_anulados.csv' : 'contratos.csv', filtered.value, headers)
+  const hoy = new Date().toISOString().slice(0, 10)
+  downloadCSV(verAnulados.value ? `contratos_anulados_${hoy}.csv` : `contratos_${hoy}.csv`, filtered.value, headers)
   $q.notify({ type: 'positive', message: `${filtered.value.length} contratos exportados` })
 }
 

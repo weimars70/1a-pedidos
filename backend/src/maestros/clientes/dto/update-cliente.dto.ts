@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { IsOptional, IsString } from 'class-validator';
 import { CreateClienteDto } from './create-cliente.dto';
 
-export class UpdateClienteDto extends PartialType(CreateClienteDto) {}
+// En UPDATE, nombre es opcional y no requiere @IsNotEmpty
+// para no bloquear actualizaciones de clientes con nombre vacío en BD
+export class UpdateClienteDto extends PartialType(OmitType(CreateClienteDto, ['nombre'] as const)) {
+  @IsOptional()
+  @IsString()
+  nombre?: string;
+}

@@ -111,10 +111,9 @@
                   </q-select>
                 </div>
 
-                <!-- Fila 3: Correo · Contacto · Supervisor -->
-                <div class="field-grid-3 q-mb-sm">
-                  <q-input v-model="form.correo" label="Correo" outlined dense color="primary" type="email" />
-                  <q-input v-model="form.contacto" label="Contacto" outlined dense color="primary" />
+                <!-- Fila 3: Correo · Supervisor -->
+                <div class="field-grid-2 q-mb-sm">
+                  <q-input v-model="form.correo" label="Correo" outlined dense color="primary" />
                   <q-select
                     v-model="form.cod_supervisor"
                     :options="supervisorOpts" option-value="value" option-label="label"
@@ -427,11 +426,14 @@ function buildClientePayload() {
   if (rest.tope_credito !== undefined && rest.tope_credito !== null) rest.tope_credito = Number(rest.tope_credito)
   // codigo_sector tiene NOT NULL en BD — usar 0 cuando no se selecciona
   if (rest.codigo_sector === null || rest.codigo_sector === undefined) rest.codigo_sector = 0
+  // nombre vacío no se manda en UPDATE para no pisar registros existentes sin nombre
+  if (!rest.nombre) delete rest.nombre
   return rest
 }
 
 async function saveForm() {
-  if (!form.nombre) { $q.notify({ type: 'warning', message: 'El nombre es requerido' }); return }
+  // nombre requerido solo al crear; al editar puede estar vacío en la BD
+  if (!editingRow.value && !form.nombre) { $q.notify({ type: 'warning', message: 'El nombre es requerido' }); return }
   saving.value = true
   try {
     let clienteId: number
@@ -515,7 +517,8 @@ function exportClientes() {
     { key: 'activo', label: 'Activo' },
     { key: 'fecha_inicio_servicio', label: 'Fecha Inicio Servicio' },
   ]
-  downloadCSV('clientes.csv', filtered.value as unknown as Record<string, unknown>[], headers)
+  const hoy = new Date().toISOString().slice(0, 10)
+  downloadCSV(`clientes_${hoy}.csv`, filtered.value as unknown as Record<string, unknown>[], headers)
   $q.notify({ type: 'positive', message: `${filtered.value.length} clientes exportados` })
 }
 
@@ -552,7 +555,8 @@ async function exportContactos() {
   if (!allContacts.length) {
     $q.notify({ type: 'warning', message: 'No hay contactos para exportar' }); return
   }
-  downloadCSV('contactos_clientes.csv', allContacts, headers)
+  const hoy = new Date().toISOString().slice(0, 10)
+  downloadCSV(`contactos_clientes_${hoy}.csv`, allContacts, headers)
   $q.notify({ type: 'positive', message: `${allContacts.length} contactos exportados` })
 }
 
