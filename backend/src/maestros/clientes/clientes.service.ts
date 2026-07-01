@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Cliente } from './cliente.entity';
 
+// El sector real vive en la tabla puente cliente_sector (codigo_cliente -> sector),
+// igual que la vista de producción view_clientes. La columna clientes.codigo_sector
+// está desactualizada para la mayoría de clientes, por eso se usa cliente_sector.
 const SELECT_CLIENTE = `
   SELECT
     c.codigo AS id, c.id AS codigo, c.ident, c.nombre, c.ciudad_codigo,
@@ -10,13 +13,14 @@ const SELECT_CLIENTE = `
     c.direccion, c.telefono, c.correo, c.contacto,
     c.centro_costos, c.tope_credito,
     c.cod_supervisor, e.nombre AS supervisor_nombre,
-    c.codigo_sector, s.nombre AS sector_nombre,
+    cs.sector AS codigo_sector, s.nombre AS sector_nombre,
     c.observaciones, c.activo,
     c.fecha AS fecha_inicio_servicio
   FROM clientes c
   LEFT JOIN ciudades ci ON ci.codigo = c.ciudad_codigo
   LEFT JOIN empleados e ON e.codigo = c.cod_supervisor
-  LEFT JOIN sectores s ON s.codigo = c.codigo_sector AND c.codigo_sector > 0
+  LEFT JOIN cliente_sector cs ON cs.codigo_cliente = c.codigo
+  LEFT JOIN sectores s ON s.codigo = cs.sector
 `;
 
 @Injectable()
@@ -28,26 +32,66 @@ export class ClientesService {
 
   findAll() {
     const q = `${SELECT_CLIENTE} WHERE c.activo IS DISTINCT FROM false ORDER BY c.nombre`;
-    console.log('[ClientesService.findAll] SQL:', q);
     return this.db.query(q);
   }
 
   async findOne(id: number) {
     const q = `${SELECT_CLIENTE} WHERE c.codigo = $1`;
-    console.log(`[ClientesService.findOne] SQL: ${q} | id=${id}`);
     const rows = await this.db.query(q, [id]);
     if (!rows[0]) throw new NotFoundException(`Cliente ${id} no encontrado`);
     return rows[0];
   }
 
-  create(data: Partial<Cliente>) {
-    const { id: _id, ...rest } = data as Record<string, unknown>;
-    return this.repo.save(this.repo.create(rest as Partial<Cliente>));
+  async create(data: Partial<Cliente>) {
+    const { id: _id, codigo_sector, ...rest } = data as Record<string, unknown>;
+    void _id;
+    const saved = await this.repo.save(this.repo.create(rest as Partial<Cliente>));
+    if (codigo_sector !== undefined) {
+      await this.syncSector(saved.id, Number(codigo_sector) || 0);
+    }
+    return this.findOne(saved.id);
   }
 
   async update(id: number, data: Partial<Cliente>) {
-    await this.repo.update(id, data);
+    // El sector se persiste en la tabla puente cliente_sector, no en clientes.codigo_sector.
+    // Se extrae del payload y se sincroniza por separado.
+    const { codigo_sector, ...rest } = data as Record<string, unknown>;
+    if (Object.keys(rest).length > 0) {
+      await this.repo.update(id, rest as Partial<Cliente>);
+    }
+    if (codigo_sector !== undefined) {
+      await this.syncSector(id, Number(codigo_sector) || 0);
+    }
     return this.findOne(id);
+  }
+
+  /** Mantiene cliente_sector 1:1 con el cliente. sector<=0 elimina la relación. */
+  private async syncSector(codigoCliente: number, sector: number) {
+    if (!sector || sector <= 0) {
+      await this.db.query(
+        `DELETE FROM cliente_sector WHERE codigo_cliente = $1`,
+        [codigoCliente],
+      );
+      return;
+    }
+    const res: unknown[] = await this.db.query(
+      `UPDATE cliente_sector SET sector = $2, r_ufechahora = NOW()
+       WHERE codigo_cliente = $1`,
+      [codigoCliente, sector],
+    );
+    // node-postgres devuelve [rows, rowCount]; usamos un SELECT de control por portabilidad
+    const exists = await this.db.query(
+      `SELECT 1 FROM cliente_sector WHERE codigo_cliente = $1 LIMIT 1`,
+      [codigoCliente],
+    );
+    void res;
+    if (!exists.length) {
+      await this.db.query(
+        `INSERT INTO cliente_sector (codigo_cliente, sector, r_ifechahora, r_ufechahora, usuario)
+         VALUES ($1, $2, NOW(), NOW(), 1)`,
+        [codigoCliente, sector],
+      );
+    }
   }
 
   async remove(id: number) {
